@@ -153,8 +153,6 @@ bindkey '\e[B' history-beginning-search-forward-end  # cursor down (customized b
 
 alias lockit='i3lock -c 082211'
 alias slock=lockit
-alias pdfsizeopt-full='pdfsizeopt --use-pngout=true --use-jbig2=true'
-alias pdfsizeoptm-full='pdfsizeopt --use-pngout=true --use-jbig2=true --use-multivalent=true'
 
 ## translate
 #alias u='translate -i'
