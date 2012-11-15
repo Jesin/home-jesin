@@ -151,9 +151,6 @@ bindkey '\e[B' history-beginning-search-forward-end  # cursor down (customized b
 
 ## aliases ##
 
-#alias lockit='i3lock -c 082211'
-alias slock=lockit
-
 ## translate
 #alias u='translate -i'
 
