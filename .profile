@@ -8,7 +8,7 @@ elif command -v slock >/dev/null 2>&1; then
 	alias lockit=slock
 fi
 
-if [ -n $BROWSER ] && command -v $BROWSER >/dev/null 2>&1; then
+if [ -n "$BROWSER" ] && command -v $BROWSER >/dev/null 2>&1; then
 	true
 elif command -v chromium >/dev/null 2>&1; then
 	BROWSER=chromium
