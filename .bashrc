@@ -8,5 +8,4 @@
 
 [ -r ~/.profile ] && . ~/.profile
 export HISTCONTROL=ignoreboth
-alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '

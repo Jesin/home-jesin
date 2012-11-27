@@ -1,20 +1,35 @@
-#alias lockit='i3lock -c 082211'
 if command -v lockit >/dev/null 2>&1; then
 	alias slock=lockit
 elif command -v i3lock >/dev/null 2>&1; then
-	alias lockit=i3lock -c 000000
+	alias lockit='i3lock -c 000000'
+	#alias lockit='i3lock -c 082211'
 	alias slock=lockit
 elif command -v slock >/dev/null 2>&1; then
 	alias lockit=slock
 fi
 
-if [ -n "$BROWSER" ] && command -v $BROWSER >/dev/null 2>&1; then
-	true
-elif command -v chromium >/dev/null 2>&1; then
-	BROWSER=chromium
-elif command -v firefox >/dev/null 2>&1; then
-	BROWSER=firefox
+[ -z "$ls_options" ] &&  ls --color=auto /dev/null >/dev/null 2>&1 && ls_options=--color=auto
+# The following if block is from grml-zsh-config, modified to work in most Bourne-compatible shells.
+# do we have GNU ls with color-support?
+if [ "x$TERM" != "xdumb" ]; then
+    #a1# execute \kbd{@a@}:\quad ls with colors
+    alias ls="ls -b -CF $ls_options"
+    #a1# execute \kbd{@a@}:\quad list all files, with colors
+    alias la="ls -la $ls_options"
+    #a1# long colored list, without dotfiles (@a@)
+    alias ll="ls -l $ls_options"
+    #a1# long colored list, human readable sizes (@a@)
+    alias lh="ls -hAl $ls_options"
+    #a1# List files, append qualifier to filenames \\&\quad(\kbd{/} for directories, \kbd{@} for symlinks ...)
+    alias l="ls -lF $ls_options"
+else
+    alias ls='ls -b -CF'
+    alias la='ls -la'
+    alias ll='ls -l'
+    alias lh='ls -hAl'
+    alias l='ls -lF'
 fi
-export BROWSER
 
-eval $(keychain --eval --quiet --noask id_ecdsa id_rsa 2> /dev/null) >/dev/null 2>&1 || true
+export BROWSER=${BROWSER-"$(command -v xdg-open):$(command -v chromium):$(command -v firefox)"}
+
+eval $(keychain --inherit any --eval --quiet --noask id_ecdsa id_rsa 2> /dev/null) >/dev/null 2>&1 || true
