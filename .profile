@@ -30,6 +30,6 @@ else
     alias l='ls -lF'
 fi
 
-export BROWSER=${BROWSER-"$(command -v xdg-open):$(command -v chromium):$(command -v firefox)"}
+export BROWSER=${BROWSER-"$(command -v xdg-open 2>/dev/null):$(command -v chromium 2>/dev/null):$(command -v firefox 2>/dev/null)"}
 
 eval $(keychain --inherit any --eval --quiet --noask id_ecdsa id_rsa 2> /dev/null) >/dev/null 2>&1 || true
