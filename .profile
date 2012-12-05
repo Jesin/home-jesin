@@ -1,8 +1,8 @@
 if command -v lockit >/dev/null 2>&1; then
 	alias slock=lockit
 elif command -v i3lock >/dev/null 2>&1; then
-	alias lockit='i3lock -c 000000'
-	#alias lockit='i3lock -c 082211'
+	alias lockit='i3lock -dc 000000'
+	#alias lockit='i3lock -dc 082211'
 	alias slock=lockit
 elif command -v slock >/dev/null 2>&1; then
 	alias lockit=slock
