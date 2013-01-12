@@ -33,3 +33,6 @@ fi
 export BROWSER=${BROWSER-"$(command -v xdg-open 2>/dev/null):$(command -v chromium 2>/dev/null):$(command -v firefox 2>/dev/null):$(command -v elinks 2>/dev/null):$(command -v links 2>/dev/null)"}
 
 eval $(keychain --inherit any-once --eval -Q -q --noask id_ecdsa id_rsa 2> /dev/null) >/dev/null 2>&1 || true
+
+echo 'Make sure you know exactly how many problems you have to do.'
+echo 'Even if you have done most of it, there might be more left than you think.'
