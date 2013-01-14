@@ -31,6 +31,7 @@ else
 fi
 
 export BROWSER=${BROWSER-"$(command -v xdg-open 2>/dev/null):$(command -v chromium 2>/dev/null):$(command -v firefox 2>/dev/null):$(command -v elinks 2>/dev/null):$(command -v links 2>/dev/null)"}
+export DISPLAY=${DISPLAY-':0'}
 
 eval $(keychain --inherit any-once --eval -Q -q --noask id_ecdsa id_rsa 2> /dev/null) >/dev/null 2>&1 || true
 
