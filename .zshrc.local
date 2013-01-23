@@ -113,6 +113,7 @@ bindkey '\e[B' history-beginning-search-forward-end  # cursor down (customized b
 ## Allow comments even in interactive shells
 #setopt interactivecomments
 
+setopt nobgnice
 
 ## compsys related snippets ##
 
