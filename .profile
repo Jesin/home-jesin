@@ -1,3 +1,5 @@
+[ "$JESIN_PROFILE_WAS_SOURCED" = true ] && return 0
+
 if command -v lockit >/dev/null 2>&1; then
 	alias slock=lockit
 elif command -v i3lock >/dev/null 2>&1; then
@@ -38,3 +40,5 @@ eval $(keychain --inherit any-once --eval -Q -q --noask id_ecdsa id_rsa 2> /dev/
 
 echo 'Make sure you know exactly how many problems you have to do.'
 echo 'Even if you have done most of it, there might be more left than you think.'
+
+JESIN_PROFILE_WAS_SOURCED=${JESIN_PROFILE_WAS_SOURCED-true}
