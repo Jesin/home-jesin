@@ -1,3 +1,4 @@
+#!/bin/sh
 [ "$JESIN_PROFILE_WAS_SOURCED" = true ] && return 0
 
 if command -v lockit >/dev/null 2>&1; then
@@ -36,9 +37,11 @@ export BROWSER="${BROWSER-$(command -v xdg-open 2>/dev/null):$(command -v chromi
 export DISPLAY="${DISPLAY-':0.0'}"
 command -v pacmatic >/dev/null 2>&1 && export PACMAN="${PACMAN-pacmatic}"
 
-eval $(keychain --inherit any-once --eval -Q -q --noask id_ecdsa id_rsa 2> /dev/null) >/dev/null 2>&1 || true
+eval "$(keychain --inherit any-once --eval -Q -q --noask id_ecdsa id_rsa 2> /dev/null)" >/dev/null 2>&1 || true
 
 echo 'Make sure you know exactly how many problems you have to do.'
 echo 'Even if you have done most of it, there might be more left than you think.'
+
+[ -r ~/.profile.local ] && . ~/.profile.local
 
 JESIN_PROFILE_WAS_SOURCED=${JESIN_PROFILE_WAS_SOURCED-true}
