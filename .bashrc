@@ -6,6 +6,6 @@
 [[ $- != *i* ]] && return
 
 
-[ -r ~/.profile ] && . ~/.profile
+[ -f ~/.profile ] && [ -r ~/.profile ] && . ~/.profile
 export HISTCONTROL=ignoreboth
 PS1='[\u@\h \W]\$ '
