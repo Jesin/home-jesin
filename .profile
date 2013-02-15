@@ -1,6 +1,8 @@
 #!/bin/sh
 [ "$JESIN_PROFILE_WAS_SOURCED" = true ] && return 0
 
+alias packer='packer --preview'
+
 if command -v lockit >/dev/null 2>&1; then
 	alias slock=lockit
 elif command -v i3lock >/dev/null 2>&1; then
