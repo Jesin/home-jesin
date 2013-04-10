@@ -1,5 +1,5 @@
 #!/bin/sh
-[ "$JESIN_PROFILE_WAS_SOURCED" = true ] && return 0
+[ xtrue = "x$JESIN_PROFILE_WAS_SOURCED" ] && return 0
 
 alias packer='packer --preview'
 
@@ -35,9 +35,13 @@ else
     alias l='ls -lF'
 fi
 
-[ -z "${BROWSER}" ] && export BROWSER="$(command -v xdg-open 2>/dev/null):$(command -v chromium 2>/dev/null):$(command -v firefox 2>/dev/null):$(command -v elinks 2>/dev/null):$(command -v links 2>/dev/null)"
-[ -z "${DISPLAY}" ] && export DISPLAY=':0.0'
-command -v pacmatic >/dev/null 2>&1 && export PACMAN="${PACMAN-pacmatic}"
+[ -z "$BROWSER" ] && export BROWSER="$(command -v xdg-open 2>/dev/null):$(command -v chromium 2>/dev/null):$(command -v firefox 2>/dev/null):$(command -v elinks 2>/dev/null):$(command -v links 2>/dev/null)"
+[ -z "$DISPLAY" ] && export DISPLAY=':0.0'
+[ -z "${OMP_NUM_THREADS}" ] && export OMP_NUM_THREADS="$(nproc 2>/dev/null || grep -c '^processor\>' /proc/cpuinfo 2>/dev/null)"
+[ -z "$NPROC" ] && export NPROC="${OMP_NUM_THREADS}"
+[ -z "$MAKEFLAGS" ] && export MAKEFLAGS="-j${NPROC}"
+
+[ -z "$PACMAN" ] && command -v pacmatic >/dev/null 2>&1 && export PACMAN=pacmatic
 
 eval "$(keychain --inherit any-once --eval -Q -q --noask id_ecdsa id_rsa 2> /dev/null)" >/dev/null 2>&1 || true
 
@@ -46,4 +50,4 @@ echo 'Even if you have done most of it, there might be more left than you think.
 
 [ -r ~/.profile.local ] && . ~/.profile.local
 
-JESIN_PROFILE_WAS_SOURCED=${JESIN_PROFILE_WAS_SOURCED-true}
+JESIN_PROFILE_WAS_SOURCED=true
