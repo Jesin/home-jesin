@@ -1,4 +1,5 @@
-[ -f ~/.profile ] && [ -r ~/.profile ] && . ~/.profile
+[ -f ~/.profile ] && [ -r ~/.profile ] && . ~/.profile || true
+compdef pacmatic=pacman
 # Filename:      /etc/skel/.zshrc
 # Purpose:       config file for zsh (z shell)
 # Authors:       (c) grml-team (grml.org)
@@ -43,6 +44,7 @@ fi
 
 ## ZLE tweaks ##
 
+autoload -U history-search-end
 bindkey '\e[A' history-beginning-search-backward-end  # cursor up (customized by Jesin)
 bindkey '\e[B' history-beginning-search-forward-end  # cursor down (customized by Jesin)
 
