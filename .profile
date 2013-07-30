@@ -13,33 +13,25 @@ elif command -v slock >/dev/null 2>&1; then
 	alias lockit=slock
 fi
 
-[ -z "$ls_options" ] &&  ls --color=auto /dev/null >/dev/null 2>&1 && ls_options=--color=auto
-# The following if block is from grml-zsh-config, modified to work in most Bourne-compatible shells.
-# do we have GNU ls with color-support?
-if [ "x$TERM" != "xdumb" ]; then
-    #a1# execute \kbd{@a@}:\quad ls with colors
-    alias ls="ls -b -CF $ls_options"
-    #a1# execute \kbd{@a@}:\quad list all files, with colors
-    alias la="ls -la $ls_options"
-    #a1# long colored list, without dotfiles (@a@)
-    alias ll="ls -l $ls_options"
-    #a1# long colored list, human readable sizes (@a@)
-    alias lh="ls -hAl $ls_options"
-    #a1# List files, append qualifier to filenames \\&\quad(\kbd{/} for directories, \kbd{@} for symlinks ...)
-    alias l="ls -lF $ls_options"
-else
-    alias ls='ls -b -CF'
-    alias la='ls -la'
-    alias ll='ls -l'
-    alias lh='ls -hAl'
-    alias l='ls -lF'
-fi
+
+[ "x$TERM" != xdumb ] && [ -z "$ls_options" ] && ls --color=auto /dev/null >/dev/null 2>&1 && ls_options='--color=auto'
+
+#a1# execute \kbd{@a@}:\quad ls with colors
+alias ls="ls -b -CF $ls_options"
+#a1# execute \kbd{@a@}:\quad list all files, with colors
+alias la="ls -la $ls_options"
+#a1# long colored list, without dotfiles (@a@)
+alias ll="ls -l $ls_options"
+#a1# long colored list, human readable sizes (@a@)
+alias lh="ls -hAl $ls_options"
+#a1# List files, append qualifier to filenames \\&\quad(\kbd{/} for directories, \kbd{@} for symlinks ...)
+alias l="ls -lF $ls_options"
 
 [ -z "$BROWSER" ] && export BROWSER="$(command -v xdg-open 2>/dev/null):$(command -v chromium 2>/dev/null):$(command -v firefox 2>/dev/null):$(command -v elinks 2>/dev/null):$(command -v links 2>/dev/null)"
 [ -z "$DISPLAY" ] && export DISPLAY=':0.0'
 [ -z "${OMP_NUM_THREADS}" ] && export OMP_NUM_THREADS="$(nproc 2>/dev/null || grep -c '^processor\>' /proc/cpuinfo 2>/dev/null)"
 [ -z "$NPROC" ] && export NPROC="${OMP_NUM_THREADS}"
-[ -z "$MAKEFLAGS" ] && export MAKEFLAGS="-j${NPROC}"
+[ -z "$MAKEFLAGS" ] && export MAKEFLAGS="-j$((NPROC+1))"
 
 [ -z "$PACMAN" ] && command -v pacmatic >/dev/null 2>&1 && export PACMAN=pacmatic
 
