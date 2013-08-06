@@ -35,7 +35,7 @@ alias l="ls -lF $ls_options"
 
 [ -z "$PACMAN" ] && command -v pacmatic >/dev/null 2>&1 && export PACMAN=pacmatic
 
-eval "$(keychain --inherit any-once --eval -Q -q --noask id_ecdsa id_rsa 2> /dev/null)" >/dev/null 2>&1 || true
+eval "$(/usr/bin/keychain --inherit any-once --eval -Q -q --noask id_ecdsa id_rsa 2> /dev/null)" >/dev/null 2>&1 || true
 
 echo 'Make sure you know exactly how many problems you have to do.'
 echo 'Even if you have done most of it, there might be more left than you think.'
