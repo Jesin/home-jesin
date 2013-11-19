@@ -36,7 +36,7 @@
 	[ -n "$MAKEFLAGS" ] || export MAKEFLAGS="-j$NPROC"
 	[ -n "$PACMAN" ] || command -v pacmatic >&2 && export PACMAN=pacmatic
 
-	eval "$(/usr/bin/keychain --inherit any-once --eval -Q -q --noask id_ecdsa id_rsa)" >&2 || true
+	#eval "$(/usr/bin/keychain --inherit any-once --eval -Q -q --noask id_ecdsa id_rsa)" >&2 || true
 
 	printf %s\\n 'Make sure you know exactly how many problems you have to do.' 'Even if you have done most of it, there might be more left than you think.'
 } 2>/dev/null
