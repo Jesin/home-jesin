@@ -20,6 +20,7 @@
 	alias ls="ls -b -CF $ls_options"
 	#a1# execute \kbd{@a@}:\quad list all files, with colors
 	alias la="ls -la $ls_options"
+	alias lA="ls -lA $ls_options"
 	#a1# long colored list, without dotfiles (@a@)
 	alias ll="ls -l $ls_options"
 	#a1# long colored list, human readable sizes (@a@)
@@ -37,8 +38,7 @@
 	[ -n "$PACMAN" ] || command -v pacmatic >&2 && export PACMAN=pacmatic
 
 	#eval "$(/usr/bin/keychain --inherit any-once --eval -Q -q --noask id_ecdsa id_rsa)" >&2 || true
-
-	printf %s\\n 'Make sure you know exactly how many problems you have to do.' 'Even if you have done most of it, there might be more left than you think.'
+	#printf %s\\n 'Make sure you know exactly how many problems you have to do.' 'Even if you have done most of it, there might be more left than you think.'
 } 2>/dev/null
 
 [ -r ~/.profile.local ] && . ~/.profile.local
