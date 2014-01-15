@@ -3,6 +3,9 @@
 
 {
 	alias packer='packer --preview'
+	alias cp='cp -i'
+	alias mv='mv -i'
+	alias rm='rm -i'
 
 	if command -v lockit >&2; then
 		alias slock=lockit
@@ -12,7 +15,6 @@
 	elif command -v slock >&2; then
 		alias lockit=slock
 	fi
-
 
 	[ "x$TERM" != xdumb ] && [ -z "$ls_options" ] && ls --color=auto /dev/null >&2 && ls_options='--color=auto'
 
