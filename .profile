@@ -37,7 +37,7 @@
 	[ -n "$OMP_NUM_THREADS" ] || export OMP_NUM_THREADS="$(nproc || grep -c '^processor\>' /proc/cpuinfo || printf %s 3)"
 	[ -n "$NPROC" ] || export NPROC=$OMP_NUM_THREADS
 	[ -n "$MAKEFLAGS" ] || export MAKEFLAGS=-j$NPROC
-	[ -n "$GHCRTS" ] || export GHCRTS=-N
+	#[ -n "$GHCRTS" ] || export GHCRTS=-N
 	[ -n "$PACMAN" ] || command -v pacmatic >&2 && export PACMAN=pacmatic
 
 	#eval "$(/usr/bin/keychain --inherit any-once --eval -Q -q --noask id_ecdsa id_rsa)" >&2 || true
