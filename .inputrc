@@ -1,4 +1,4 @@
-## Bind the up arrow to history search, instead of history step
-#"\e[A": history-search-backward
-## And the reverse (down)
-#"\e[B": history-search-forward
+# Bind the up arrow to history search, instead of history step
+"\e[A": history-search-backward
+# And the reverse (down)
+"\e[B": history-search-forward
