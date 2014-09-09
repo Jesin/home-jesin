@@ -30,17 +30,15 @@
 	#a1# List files, append qualifier to filenames \\&\quad(\kbd{/} for directories, \kbd{@} for symlinks ...)
 	alias l="ls -lF"
 
-	set +a
-	command -v vim >&2 && VISUAL='vim -p'
-	[ -z "$VISUAL" ] || EDITOR=$VISUAL
-	[ -n "$DISPLAY" ] || DISPLAY=':0.0'
-	[ -n "$BROWSER" ] || BROWSER="$(command -v xdg-open):$(command -v chromium):$(command -v firefox):$(command -v elinks):$(command -v links):$(command -v w3m)"
-	[ -n "$OMP_NUM_THREADS" ] || OMP_NUM_THREADS="$(nproc || grep -c '^processor\>' /proc/cpuinfo || printf %s 3)"
-	[ -n "$NPROC" ] || NPROC=$OMP_NUM_THREADS
-	[ -n "$MAKEFLAGS" ] || MAKEFLAGS=-j$NPROC
-	#[ -n "$GHCRTS" ] || GHCRTS=-N
-	[ -n "$PACMAN" ] || command -v pacmatic >&2 && PACMAN=pacmatic
-	set -a
+	command -v vim >&2 && export VISUAL='vim -p'
+	[ -z "$VISUAL" ] || export EDITOR=$VISUAL
+	[ -n "$DISPLAY" ] || export DISPLAY=':0.0'
+	[ -n "$BROWSER" ] || export BROWSER="$(command -v xdg-open):$(command -v chromium):$(command -v firefox):$(command -v elinks):$(command -v links):$(command -v w3m)"
+	[ -n "$OMP_NUM_THREADS" ] || export OMP_NUM_THREADS="$(nproc || grep -c '^processor\>' /proc/cpuinfo || printf %s 2)"
+	[ -n "$NPROC" ] || export NPROC=$OMP_NUM_THREADS
+	[ -n "$MAKEFLAGS" ] || export MAKEFLAGS=-j$NPROC
+	#[ -n "$GHCRTS" ] || export GHCRTS=-N
+	[ -n "$PACMAN" ] || command -v pacmatic >&2 && export PACMAN=pacmatic
 
 	#eval "$(/usr/bin/keychain --inherit any-once --eval -Q -q --noask id_ecdsa id_rsa)" >&2 || true
 	#printf %s\\n 'Make sure you know exactly how many problems you have to do.' 'Even if you have done most of it, there might be more left than you think.'
