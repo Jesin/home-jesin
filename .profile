@@ -1,8 +1,6 @@
 #!/bin/sh
 [ xtrue = "x$JESIN_PROFILE_WAS_SOURCED" ] && return 0
 
-[ -r ~/.profile.local ] && . ~/.profile.local
-
 {
 	alias packer='packer --preview'
 	alias cp='cp -i'
@@ -35,5 +33,7 @@
 
 	#eval "$(/usr/bin/keychain --inherit any-once --eval -Q -q --noask id_ecdsa id_rsa)" >&2 || true
 } 2>/dev/null
+
+[ -r ~/.profile.local ] && . ~/.profile.local
 
 JESIN_PROFILE_WAS_SOURCED=true
