@@ -1,20 +1,13 @@
 #!/bin/sh
 [ xtrue = "x$JESIN_PROFILE_WAS_SOURCED" ] && return 0
 
+[ -r ~/.profile.local ] && . ~/.profile.local
+
 {
 	alias packer='packer --preview'
 	alias cp='cp -i'
 	alias mv='mv -i'
 	alias rm='rm -i'
-
-	if command -v lockit >&2; then
-		alias slock=lockit
-	elif command -v i3lock >&2; then
-		alias lockit='i3lock -dc 000000'
-		alias slock=lockit
-	elif command -v slock >&2; then
-		alias lockit=slock
-	fi
 
 	[ "x$TERM" != xdumb ] && [ -z "$ls_options" ] && ls --color=auto /dev/null >&2 && ls_options='--color=auto'
 
@@ -41,9 +34,6 @@
 	[ -n "$PACMAN" ] || command -v pacmatic >&2 && export PACMAN=pacmatic
 
 	#eval "$(/usr/bin/keychain --inherit any-once --eval -Q -q --noask id_ecdsa id_rsa)" >&2 || true
-	#printf %s\\n 'Make sure you know exactly how many problems you have to do.' 'Even if you have done most of it, there might be more left than you think.'
 } 2>/dev/null
-
-[ -r ~/.profile.local ] && . ~/.profile.local
 
 JESIN_PROFILE_WAS_SOURCED=true
