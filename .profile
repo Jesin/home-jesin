@@ -2,31 +2,21 @@
 [ xtrue = "x$JESIN_PROFILE_WAS_SOURCED" ] && return 0
 
 {
+	[ -r /etc/profile.d/vte.sh ] && . /etc/profile.d/vte.sh
+
 	alias packer='packer --preview'
-	alias cp='cp -i'
-	alias mv='mv -i'
-	alias rm='rm -i'
+	alias cp='cp -i' mv='mv -i' rm='rm -i'
 
 	[ "x$TERM" != xdumb ] && [ -z "$ls_options" ] && ls --color=auto /dev/null >&2 && ls_options='--color=auto'
-
-	#a1# execute \kbd{@a@}:\quad ls with colors
-	alias ls="ls -bCF $ls_options"
-	#a1# execute \kbd{@a@}:\quad list all files, with colors
-	alias la="ls -la"
-	alias lA="ls -lA"
-	#a1# long colored list, without dotfiles (@a@)
-	alias ll="ls -l"
-	#a1# long colored list, human readable sizes (@a@)
-	alias lh="ls -hAl"
-	#a1# List files, append qualifier to filenames \\&\quad(\kbd{/} for directories, \kbd{@} for symlinks ...)
-	alias l="ls -lF"
+	alias ls="ls $ls_options -F"
+	alias l='ls -l' la='ls -la' lA='ls -lA' lh='ls -lAh'
 
 	command -v vim >&2 && export VISUAL='vim -p'
 	[ -z "$VISUAL" ] || export EDITOR=$VISUAL
-	[ -n "$DISPLAY" ] || export DISPLAY=':0.0'
+	[ -n "$DISPLAY" ] || export DISPLAY=':0'
 	[ -n "$BROWSER" ] || export BROWSER="$(command -v xdg-open):$(command -v chromium):$(command -v firefox):$(command -v elinks):$(command -v links):$(command -v w3m)"
-	[ -n "$OMP_NUM_THREADS" ] || export OMP_NUM_THREADS="$(nproc || grep -c '^processor\>' /proc/cpuinfo || printf %s 2)"
-	[ -n "$NPROC" ] || export NPROC=$OMP_NUM_THREADS
+	[ -n "$NPROC" ] || export NPROC="$(nproc || grep -c '^processor\>' /proc/cpuinfo || printf %s 2)"
+	[ -n "$OMP_NUM_THREADS" ] || export OMP_NUM_THREADS=$NPROC
 	[ -n "$MAKEFLAGS" ] || export MAKEFLAGS=-j$NPROC
 	#[ -n "$GHCRTS" ] || export GHCRTS=-N
 	[ -n "$PACMAN" ] || command -v pacmatic >&2 && export PACMAN=pacmatic
