@@ -1,0 +1,29 @@
+#!/bin/dash
+listfile=$1
+shift
+
+if [ -d "$TMPDIR" ]; then
+	:
+elif [ -d /tmp ]; then
+	TMPDIR=/tmp
+elif [ -d /var/tmp ]; then
+	TMPDIR=/var/tmp
+else
+	printf %s\\n "Error: could not find temporary directory $TMPDIR" >&2
+	exit 1
+fi
+
+tmpfile="$(mktemp 2>/dev/null)"
+[ -w "$tmpfile" ] || {
+	i=0
+	tmpfile=$TMPDIR/jesin-add-to-list-$$-$i
+	while [ -e "$tmpfile" ]; do
+		i=$((i+1))
+		tmpfile=$TMPDIR/jesin-add-to-list-$$-$i
+	done
+	touch "$tmpfile"
+} || exit
+
+printf %s\\n "$@" | sort -u - "$listfile" >"$tmpfile"
+exec mv "$tmpfile" "$listfile"
+# vim:ft=sh
