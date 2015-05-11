@@ -20,8 +20,6 @@
 	[ -n "$MAKEFLAGS" ] || export MAKEFLAGS=-j$NPROC
 	#[ -n "$GHCRTS" ] || export GHCRTS=-N
 	[ -n "$PACMAN" ] || command -v pacmatic >&2 && export PACMAN=pacmatic
-
-	#eval "$(/usr/bin/keychain --inherit any-once --eval -Q -q --noask id_ecdsa id_rsa)" >&2 || true
 } 2>/dev/null
 
 [ -r ~/.profile.local ] && . ~/.profile.local
