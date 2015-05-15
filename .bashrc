@@ -7,4 +7,4 @@
 
 [ -f ~/.profile ] && [ -r ~/.profile ] && . ~/.profile
 export HISTCONTROL=erasedups:ignoreboth HISTSIZE=8192
-PS1='[\u@\h \W]\$ '
+PS1='[\u@\h \w]${?#0}\$ '
