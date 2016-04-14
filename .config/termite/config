@@ -1,0 +1,16 @@
+[options]
+browser=xdg-open
+clickable_url=false
+cursor_blink=off
+dynamic_title=true
+font=DejaVu Sans Mono 9
+icon_name=utilities-terminal
+scrollback_lines=1
+
+[colors]
+background=#000000
+cursor=#00aa00
+foreground=#ffffff
+foreground_bold=#ffffff
+
+# vim:ft=dosini cms=#%s
