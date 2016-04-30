@@ -170,7 +170,9 @@ bar {
 hide_edge_borders both
 
 bindsym $mod+b border toggle
+bindsym $mod+Shift+b border normal
 bindsym $mod+o resize set 640 480
+bindsim $mod+Shift+o resize set 320 240
 
 bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle
 bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 1%-
