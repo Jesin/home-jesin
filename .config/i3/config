@@ -174,8 +174,8 @@ bindsym $mod+Shift+b border normal
 bindsym $mod+o resize set 640 480
 bindsim $mod+Shift+o resize set 320 240
 
-bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle
-bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 1%-
-bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 1%+ on
-bindsym XF86AudioMicMute exec --no-startup-id amixer set Capture toggle
+bindsym XF86AudioMute exec --no-startup-id amixer -q set Master toggle
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q set Master 1%-
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q set Master 1%+ on
+bindsym XF86AudioMicMute exec --no-startup-id amixer -q set Capture toggle
 bindsym XF86ScreenSaver exec --no-startup-id i3lock -dc000000
