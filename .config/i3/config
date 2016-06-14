@@ -10,6 +10,7 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod4
+workspace_layout tabbed
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -35,7 +36,7 @@ set $right semicolon
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec --no-startup-id /home/jesin/.local/bin/jesin-default-terminal
+bindsym $mod+Return exec ~/.local/bin/jesin-default-terminal
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -174,8 +175,10 @@ bindsym $mod+Shift+b border normal
 bindsym $mod+o resize set 640 480
 bindsim $mod+Shift+o resize set 320 240
 
-bindsym XF86AudioMute exec --no-startup-id amixer -q set Master toggle
-bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q set Master 1%-
-bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q set Master 1%+ on
-bindsym XF86AudioMicMute exec --no-startup-id amixer -q set Capture toggle
+bindsym XF86AudioMute exec --no-startup-id ponymix -N toggle
+bindsym XF86AudioLowerVolume exec --no-startup-id ponymix -N decrease 1
+bindsym XF86AudioRaiseVolume exec --no-startup-id ponymix -N increase 1
+bindsym XF86AudioMicMute exec --no-startup-id ponymix -Ntsource toggle
 bindsym XF86ScreenSaver exec --no-startup-id i3lock -dc000000
+
+exec ~/.local/bin/jesin-default-terminal
