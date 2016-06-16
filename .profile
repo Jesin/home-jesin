@@ -12,12 +12,12 @@
 	alias l='ls -l' la='ls -la' lA='ls -lA' lh='ls -lAh'
 
 	command -v vim >&2 && export VISUAL='vim -p'
-	[ -z "$VISUAL" ] || export EDITOR=$VISUAL
+	[ -z "$VISUAL" ] || export EDITOR="$VISUAL"
 	[ -n "$DISPLAY" ] || export DISPLAY=':0'
 	[ -n "$BROWSER" ] || export BROWSER="$(command -v chromium):$(command -v firefox):$(command -v midori):$(command -v konqueror):$(command -v epiphany):$(command -v luakit):$(command -v surf):$(command -v elinks):$(command -v links):$(command -v w3m)"
 	[ -n "$NPROC" ] || export NPROC="$(nproc || grep -c '^processor\>' /proc/cpuinfo || printf %s 2)"
-	[ -n "$OMP_NUM_THREADS" ] || export OMP_NUM_THREADS=$NPROC
-	[ -n "$MAKEFLAGS" ] || export MAKEFLAGS=-j$NPROC
+	[ -n "$OMP_NUM_THREADS" ] || export OMP_NUM_THREADS="$NPROC"
+	[ -n "$MAKEFLAGS" ] || export MAKEFLAGS="-j$NPROC"
 	#[ -n "$GHCRTS" ] || export GHCRTS=-N
 	[ -n "$PACMAN" ] || command -v pacmatic >&2 && export PACMAN=pacmatic
 } 2>/dev/null
