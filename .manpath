@@ -1,0 +1,2 @@
+MANPATH_MAP ~/.local/bin ~/.local/share/man
+MANDB_MAP ~/.local/share/man ~/.local/var/cache/man
