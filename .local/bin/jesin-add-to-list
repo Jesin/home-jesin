@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/bin/sh
 listfile=$1
 shift
 
