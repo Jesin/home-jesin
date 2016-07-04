@@ -7,7 +7,7 @@
 	alias packer='packer --preview'
 	alias cp='cp -i' mv='mv -i' rm='rm -i'
 
-	[ "x$TERM" != xdumb ] && [ -z "$ls_options" ] && ls --color=auto /dev/null >&2 && ls_options='--color=auto'
+	[ "x$TERM" != xdumb ] && [ -z "$ls_options" ] && ls --color=auto -b /dev/null >&2 && ls_options='--color=auto -b'
 	alias ls="ls $ls_options -F"
 	alias l='ls -l' la='ls -la' lA='ls -lA' lh='ls -lAh'
 
