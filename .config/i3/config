@@ -27,10 +27,10 @@ font pango:DejaVu Sans Mono 8
 
 # use these keys for focus, movement, and resize directions when reaching for
 # the arrows is not convenient
-set $up l
-set $down k
-set $left j
-set $right semicolon
+#set $up l
+#set $down k
+#set $left j
+#set $right semicolon
 
 # use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -49,10 +49,10 @@ bindsym $mod+d exec dmenu_run
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-bindsym $mod+$left focus left
-bindsym $mod+$down focus down
-bindsym $mod+$up focus up
-bindsym $mod+$right focus right
+#bindsym $mod+$left focus left
+#bindsym $mod+$down focus down
+#bindsym $mod+$up focus up
+#bindsym $mod+$right focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -61,10 +61,10 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod+Shift+$left move left
-bindsym $mod+Shift+$down move down
-bindsym $mod+Shift+$up move up
-bindsym $mod+Shift+$right move right
+#bindsym $mod+Shift+$left move left
+#bindsym $mod+Shift+$down move down
+#bindsym $mod+Shift+$up move up
+#bindsym $mod+Shift+$right move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -144,10 +144,10 @@ mode "resize" {
 	# Pressing right will grow the window’s width.
 	# Pressing up will shrink the window’s height.
 	# Pressing down will grow the window’s height.
-	bindsym $left resize shrink width 10 px or 10 ppt
-	bindsym $down resize grow height 10 px or 10 ppt
-	bindsym $up resize shrink height 10 px or 10 ppt
-	bindsym $right resize grow width 10 px or 10 ppt
+	#bindsym $left resize shrink width 10 px or 10 ppt
+	#bindsym $down resize grow height 10 px or 10 ppt
+	#bindsym $up resize shrink height 10 px or 10 ppt
+	#bindsym $right resize grow width 10 px or 10 ppt
 
 	# same bindings, but for the arrow keys
 	bindsym Left resize shrink width 10 px or 10 ppt
@@ -173,12 +173,13 @@ hide_edge_borders both
 bindsym $mod+b border toggle
 bindsym $mod+Shift+b border normal
 bindsym $mod+o resize set 640 480
-bindsim $mod+Shift+o resize set 320 240
+bindsym $mod+Shift+o resize set 320 240
 
 bindsym XF86AudioMute exec --no-startup-id ponymix -N toggle
 bindsym XF86AudioLowerVolume exec --no-startup-id ponymix -N decrease 1
 bindsym XF86AudioRaiseVolume exec --no-startup-id ponymix -N increase 1
 bindsym XF86AudioMicMute exec --no-startup-id ponymix -Ntsource toggle
 bindsym XF86ScreenSaver exec --no-startup-id i3lock -ec000000
+bindsym $mod+l exec --no-startup-id i3lock -ec000000
 
 exec ~/.local/bin/jesin-default-terminal
