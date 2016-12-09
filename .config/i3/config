@@ -181,5 +181,7 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id ponymix -N increase 1
 bindsym XF86AudioMicMute exec --no-startup-id ponymix -Ntsource toggle
 bindsym XF86ScreenSaver exec --no-startup-id i3lock -ec000000
 bindsym $mod+l exec --no-startup-id i3lock -ec000000
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -time 0 -steps 1 -dec 2
+bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -time 0 -steps 1 -inc 2
 
 exec ~/.local/bin/jesin-default-terminal
