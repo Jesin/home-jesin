@@ -43,8 +43,9 @@ def compact_ssh_known_hosts(iterlines):
 	return (hostdict, markerdict, commentlines)
 
 
-def main(*argv):
-	fin = fileinput.FileInput(argv)
+def main(*args):
+	fin = fileinput.FileInput(args)
+	del args
 	hostdict, markerdict, commentlines = compact_ssh_known_hosts(fin)
 	fin.close()
 	del fin

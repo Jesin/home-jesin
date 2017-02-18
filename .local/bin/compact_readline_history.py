@@ -8,8 +8,8 @@ def unique_items(xs):
 	seen = set()
 	for x in xs:
 		if x not in seen:
-			yield x
 			seen.add(x)
+			yield x
 
 
 def main(*argv):
