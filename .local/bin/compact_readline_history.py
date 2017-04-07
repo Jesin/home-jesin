@@ -12,8 +12,9 @@ def unique_items(xs):
 			yield x
 
 
-def main(*argv):
-	fin = fileinput.FileInput(argv)
+def main(*args):
+	fin = fileinput.FileInput(args)
+	del args
 	xs = tuple(fin)
 	fin.close()
 	del fin
