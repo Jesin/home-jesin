@@ -1,24 +1,22 @@
-#!/usr/bin/env pypy
+#!/usr/bin/env python3
 # vim:ft=python:noet:sw=4:ts=4
+import collections
 import fileinput
 import sys
 
 
-def unique_items(xs):
-	seen = set()
+def latest_only(xs):
+	res = collections.OrderedDict()
 	for x in xs:
-		if x not in seen:
-			seen.add(x)
-			yield x
+		try: res.move_to_end(x)
+		except KeyError: res[x] = None
+	return res
 
 
 def main(*args):
-	fin = fileinput.FileInput(args)
-	del args
-	xs = tuple(fin)
-	fin.close()
-	del fin
-	xs = reversed(tuple(unique_items(reversed(xs))))
+	with fileinput.FileInput(args) as fin:
+		del args
+		xs = latest_only(fin)
 	fout = sys.stdout
 	for x in xs:
 		fout.write(x)
