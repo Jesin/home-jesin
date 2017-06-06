@@ -1,4 +1,5 @@
 [submodule ".vim"]
 	path = .vim
 	url = https://github.com/Jesin/dotvim
-	branch = master
+	fetchRecurseSubmodules = true
+	ignore = untracked
