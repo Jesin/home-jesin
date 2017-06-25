@@ -9,7 +9,7 @@
 
 	[ "x$TERM" != xdumb ] && [ -z "$ls_options" ] && ls --color=auto -b /dev/null >&2 && ls_options='--color=auto -b'
 	alias ls="ls $ls_options -F"
-	alias l='ls -l' la='ls -la' lA='ls -lA' lh='ls -lAh'
+	alias l='ls -l' la='ls -lA' lA='ls -lA' lh='ls -lAh'
 
 	command -v vim >&2 && export VISUAL='vim -p'
 	[ -z "$VISUAL" ] || export EDITOR="$VISUAL"
