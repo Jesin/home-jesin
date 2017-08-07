@@ -1,5 +1,5 @@
-#
+#!/bin/bash
 # ~/.bash_profile
-#
 
-[ -f ~/.bashrc ] && . ~/.bashrc
+[ -r ~/.bashrc ] && . ~/.bashrc
+[ -r ~/.profile ] && . ~/.profile

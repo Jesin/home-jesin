@@ -1,14 +1,12 @@
 #!/bin/sh
-[ xtrue = "x$JESIN_PROFILE_WAS_SOURCED" ] && return 0
+[ -n "$JESIN_PROFILE_WAS_SOURCED" ] && return
+JESIN_PROFILE_WAS_SOURCED=1
 
 {
-	[ -r /etc/profile.d/vte.sh ] && . /etc/profile.d/vte.sh
-
-	alias packer='packer --preview'
 	alias cp='cp -i' mv='mv -i' #rm='rm -i'
 
-	[ "x$TERM" != xdumb ] && [ -z "$ls_options" ] && ls --color=auto -b /dev/null >&2 && ls_options='--color=auto -b'
-	alias ls="ls $ls_options -F"
+	[ dumb != "$TERM" ] && [ -z "$ls_options" ] && ls --color=auto -Fb /dev/null >&2 && ls_options='--color=auto -Fb' || ls_options=-F
+	alias ls="ls $ls_options"
 	alias l='ls -l' la='ls -lA' lA='ls -lA' lh='ls -lAh'
 
 	command -v vim >&2 && export VISUAL='vim -p'
@@ -16,13 +14,12 @@
 	[ -n "${LESS+x}" ] || export LESS=RX
 	[ -n "$DISPLAY" ] || export DISPLAY=':0'
 	[ -n "$BROWSER" ] || export BROWSER="$(command -v chromium):$(command -v firefox):$(command -v midori):$(command -v konqueror):$(command -v epiphany):$(command -v luakit):$(command -v surf):$(command -v elinks):$(command -v links):$(command -v w3m)"
-	[ -n "$NPROC" ] || export NPROC="$(nproc || grep -c '^processor\>' /proc/cpuinfo || printf %s 2)"
+	[ -n "$NPROC" ] || export NPROC="$(nproc || getconf _NPROCESSORS_ONLN || grep -c '^processor\>' </proc/cpuinfo || printf %s 3)"
 	[ -n "$OMP_NUM_THREADS" ] || export OMP_NUM_THREADS="$NPROC"
 	[ -n "$MAKEFLAGS" ] || export MAKEFLAGS="-j$NPROC"
 	#[ -n "$GHCRTS" ] || export GHCRTS=-N
-	[ -n "$PACMAN" ] || command -v pacmatic >&2 && export PACMAN=pacmatic
+	[ -z "$PACMAN" ] && command -v pacmatic >&2 && export PACMAN=pacmatic
 } 2>/dev/null
 
 [ -r ~/.profile.local ] && . ~/.profile.local
-
-JESIN_PROFILE_WAS_SOURCED=true
+:
