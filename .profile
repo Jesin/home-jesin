@@ -5,11 +5,11 @@ JESIN_PROFILE_WAS_SOURCED=1
 {
 	alias cp='cp -i' mv='mv -i' #rm='rm -i'
 
-	[ dumb != "$TERM" ] && [ -z "$ls_options" ] && ls --color=auto -Fb /dev/null >&2 && ls_options='--color=auto -Fb' || ls_options=-F
+	[ dumb != "$TERM" ] && [ -z "$ls_options" ] && ls --color=auto -Fb /dev/null && ls_options='--color=auto -Fb' || ls_options=-F
 	alias ls="ls $ls_options"
 	alias l='ls -l' la='ls -lA' lA='ls -lA' lh='ls -lAh'
 
-	command -v vim >&2 && export VISUAL='vim -p'
+	command -v vim && export VISUAL='vim -p'
 	[ -z "$VISUAL" ] || export EDITOR="$VISUAL"
 	[ -n "${LESS+x}" ] || export LESS=RX
 	[ -n "$DISPLAY" ] || export DISPLAY=':0'
@@ -18,8 +18,7 @@ JESIN_PROFILE_WAS_SOURCED=1
 	[ -n "$OMP_NUM_THREADS" ] || export OMP_NUM_THREADS="$NPROC"
 	[ -n "$MAKEFLAGS" ] || export MAKEFLAGS="-j$NPROC"
 	#[ -n "$GHCRTS" ] || export GHCRTS=-N
-	[ -z "$PACMAN" ] && command -v pacmatic >&2 && export PACMAN=pacmatic
-} 2>/dev/null
+	[ -z "$PACMAN" ] && command -v pacmatic && export PACMAN=pacmatic
+} >/dev/null 2>&1
 
 [ -r ~/.profile.local ] && . ~/.profile.local
-:
