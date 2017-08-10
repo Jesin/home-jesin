@@ -47,10 +47,12 @@ def hash_all_files(paths, htoi=None, itop=None, hasher=hashlib.blake2b):
 
 
 def main(*args):
-	htoi, itop = hash_all_files(map(os.fsencode, args))
+	args = map(os.fsencode, args)
+	htoi, itop = hash_all_files(args)
+	del args
+	htoi = sorted(htoi.items())
 	out = sys.stdout.buffer
-	for h in sorted(htoi):
-		inodes = htoi[h]
+	for (h, inodes) in htoi:
 		h = h.hex().encode()
 		inodes.sort()
 		for i in inodes:
