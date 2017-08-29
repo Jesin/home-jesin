@@ -36,7 +36,7 @@ font pango:DejaVu Sans Mono 8
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec ~/.local/bin/jesin-default-terminal
+bindsym $mod+Return exec jesin-default-terminal
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -181,7 +181,7 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id ponymix -N increase 1
 bindsym XF86AudioMicMute exec --no-startup-id ponymix -Ntsource toggle
 bindsym XF86ScreenSaver exec --no-startup-id i3lock -ec000000
 bindsym $mod+l exec --no-startup-id i3lock -ec000000
-bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -time 0 -steps 1 -dec 2
-bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -time 0 -steps 1 -inc 2
+bindsym XF86MonBrightnessDown exec --no-startup-id jesin-adj-backlight intel_backlight -3
+bindsym XF86MonBrightnessUp exec --no-startup-id jesin-adj-backlight intel_backlight 3
 
-exec ~/.local/bin/jesin-default-terminal
+exec jesin-default-terminal

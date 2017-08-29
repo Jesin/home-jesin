@@ -1,4 +1,4 @@
-#!/usr/bin/env pypy
+#!/usr/bin/pypy
 # vim:ft=python:noet:sw=4:ts=4
 import fileinput
 import sys

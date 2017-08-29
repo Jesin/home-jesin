@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 # vim:ft=python:noet:sw=4:ts=4
 import contextlib, hashlib
 import os, stat, sys
@@ -22,26 +22,29 @@ def hash_all_files(paths, htoi=None, itop=None, hasher=hashlib.blake2b):
 	if htoi is None: htoi = {}
 	if itop is None: itop = {}
 	for p in paths:
-		ino = None
+		i = None
 		try:
 			if p.is_file(follow_symlinks=False):
-				ino = p.inode()
-			elif not p.is_dir(follow_symlinks=False):
+				i = p.inode()
+				p = p.path
+			elif p.is_dir(follow_symlinks=False):
+				p = p.path
+				s = os.stat(p, follow_symlinks=False)
+			else:
 				continue
-			p = p.path
 		except AttributeError:
-			s = os.lstat(p)
+			s = os.stat(p, follow_symlinks=False)
 			if stat.S_ISREG(s.st_mode):
-				ino = s.st_ino
+				i = s.st_ino
 			elif not stat.S_ISDIR(s.st_mode):
 				continue
-		if ino is None:
+		if i is None:
 			with os.scandir(p) as cs:
 				hash_all_files(cs, htoi, itop, hasher)
 		else:
-			ps = itop.setdefault(ino, [])
+			ps = itop.setdefault(i, [])
 			if not ps:
-				htoi.setdefault(hash_file(hasher(), p).digest(), []).append(ino)
+				htoi.setdefault(hash_file(hasher(), p).digest(), []).append(i)
 			ps.append(p)
 	return (htoi, itop)
 
