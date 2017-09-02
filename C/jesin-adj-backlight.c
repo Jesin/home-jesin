@@ -24,16 +24,18 @@ int main(int argc, char const *const *argv) {
 	if ((*argv[1] != '/' && chdir("/sys/class/backlight") < 0) || chdir(argv[1]) < 0) { return makeFailureCode(errno); }
 	int fd = open("max_brightness", O_RDONLY);
 	if (fd < 0) { return makeFailureCode(errno); }
-	ssize_t len = read(fd, buf, JESBUFSIZE-1);
+	ssize_t len = read(fd, buf, JESBUFSIZE);
 	if (len <= 0 || close(fd) < 0) { return makeFailureCode(errno); }
 	/* NOTE: fd was just closed. */
+	if (len > JESBUFSIZE-1) { len = JESBUFSIZE-1; }
 	buf[len] = 0;
 	intmax_t bmax;
 	if (sscanf(buf, "%ji", &bmax) != 1) { return makeFailureCode(errno); }
 	fd = open("brightness", O_RDWR);
 	if (fd < 0) { return makeFailureCode(errno); }
-	len = read(fd, buf, JESBUFSIZE-1);
+	len = read(fd, buf, JESBUFSIZE);
 	if (len <= 0) { return makeFailureCode(errno); }
+	if (len > JESBUFSIZE-1) { len = JESBUFSIZE-1; }
 	buf[len] = 0;
 	intmax_t b;
 	if (sscanf(buf, "%ji", &b) != 1) { return makeFailureCode(errno); }
