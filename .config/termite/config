@@ -5,6 +5,7 @@ cursor_blink=off
 dynamic_title=true
 font=DejaVu Sans Mono 9
 icon_name=utilities-terminal
+mouse_autohide=true
 scrollback_lines=1
 
 [colors]
