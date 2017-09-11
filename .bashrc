@@ -2,11 +2,14 @@
 # ~/.bashrc
 
 # If not running interactively, don't do anything
-[[ $- != *i* ]] && return
+case "$-" in
+	*i*) ;;
+	*) return 0
+esac
 
 shopt -s histappend
 HISTCONTROL=ignoreboth:erasedups
-HISTSIZE=8192
+HISTSIZE=-1
 export HISTCONTROL HISTSIZE
 PS1='\[\e[0m\][\u@\h \w]${?#0}\$ '
 
@@ -17,5 +20,4 @@ jesBashSync() {
 	history -r
 }
 
-#PROMPT_COMMAND="jesBashSync; ${PROMPT_COMMAND#jesBashSync; }"
 [ -r ~/.profile ] && . ~/.profile
