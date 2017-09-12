@@ -3,8 +3,8 @@
 
 # If not running interactively, don't do anything
 case "$-" in
-	*i*) ;;
-	*) return 0
+ *i*) ;;
+ *) return 0 ;;
 esac
 
 shopt -s histappend

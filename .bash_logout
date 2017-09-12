@@ -1,5 +1,9 @@
 #!/bin/bash
 # ~/.bash_logout
-history -n
-history -w
-history -c
+case "$-" in
+ *i*)
+	history -n
+	history -w
+	history -c
+ ;;
+esac
