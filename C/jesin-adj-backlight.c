@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <stdalign.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -31,14 +32,17 @@ int main(int argc, char const *const *argv) {
 	buf[len] = 0;
 	intmax_t bmax;
 	if (sscanf(buf, "%ji", &bmax) != 1) { return makeFailureCode(errno); }
-	fd = open("brightness", O_RDWR);
+	bool const rel = (inc < 0 || *argv[2] == '+');
+	fd = open("brightness", (rel ? O_RDWR : O_WRONLY));
 	if (fd < 0) { return makeFailureCode(errno); }
-	len = read(fd, buf, JESBUFSIZE);
-	if (len <= 0) { return makeFailureCode(errno); }
-	if (len > JESBUFSIZE-1) { len = JESBUFSIZE-1; }
-	buf[len] = 0;
-	intmax_t b;
-	if (sscanf(buf, "%ji", &b) != 1) { return makeFailureCode(errno); }
+	intmax_t b = 0;
+	if (rel) {
+		len = read(fd, buf, JESBUFSIZE);
+		if (len <= 0) { return makeFailureCode(errno); }
+		if (len > JESBUFSIZE-1) { len = JESBUFSIZE-1; }
+		buf[len] = 0;
+		if (sscanf(buf, "%ji", &b) != 1) { return makeFailureCode(errno); }
+	}
 	b += inc;
 	if (b < 0) { b = 0; }
 	if (b > bmax) { b = bmax; }
