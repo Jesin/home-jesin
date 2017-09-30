@@ -179,8 +179,8 @@ bindsym XF86AudioMute exec --no-startup-id ponymix -N toggle
 bindsym XF86AudioLowerVolume exec --no-startup-id ponymix -N decrease 1
 bindsym XF86AudioRaiseVolume exec --no-startup-id ponymix -N increase 1
 bindsym XF86AudioMicMute exec --no-startup-id ponymix -Ntsource toggle
-bindsym XF86ScreenSaver exec --no-startup-id i3lock -ec000000
-bindsym $mod+l exec --no-startup-id i3lock -ec000000
+bindsym XF86ScreenSaver exec --no-startup-id i3lock -enc000000
+bindsym $mod+l exec --no-startup-id i3lock -enc000000
 bindsym XF86MonBrightnessDown exec --no-startup-id jesin-backlight intel_backlight -3
 bindsym XF86MonBrightnessUp exec --no-startup-id jesin-backlight intel_backlight +3
 
