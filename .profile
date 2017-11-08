@@ -3,10 +3,8 @@
 JESIN_PROFILE_WAS_SOURCED=1
 
 {
-	alias cp='cp -i' mv='mv -i' #rm='rm -i'
-
-	[ dumb != "$TERM" ] && [ -z "$ls_options" ] && ls --color=auto -Fb /dev/null && ls_options='--color=auto -Fb' || ls_options=-F
-	alias ls="ls $ls_options"
+	alias cp='cp -i' ls='ls -F' mv='mv -i'
+	[ dumb != "$TERM" ] && ls --color=auto -Fb /dev/null && alias ls='ls --color=auto -Fb'
 	alias l='ls -l' la='ls -lA' lA='ls -lA' lh='ls -lAh'
 
 	command -v vim && export VISUAL='vim -p'
@@ -19,6 +17,10 @@ JESIN_PROFILE_WAS_SOURCED=1
 	[ -n "$MAKEFLAGS" ] || export MAKEFLAGS="-j$NPROC"
 	#[ -n "$GHCRTS" ] || export GHCRTS=-N
 	[ -z "$PACMAN" ] && command -v pacmatic && export PACMAN=pacmatic
+	[ -n "$TMUX_TMPDIR" ] || [ -z "$XDG_RUNTIME_DIR" ] || export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
+	[ -n "$XDG_CACHE_HOME" ] || export XDG_CACHE_HOME="$HOME/.cache"
+	[ -n "$XDG_CONFIG_HOME" ] || export XDG_CONFIG_HOME="$HOME/.config"
+	[ -n "$XDG_DATA_HOME" ] || export XDG_DATA_HOME="$HOME/.local/share"
 } >/dev/null 2>&1
 
 [ -r ~/.profile.local ] && . ~/.profile.local
