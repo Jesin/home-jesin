@@ -7,7 +7,7 @@ JESIN_PROFILE_WAS_SOURCED=1
 	[ dumb != "$TERM" ] && ls --color=auto -Fb /dev/null && alias ls='ls --color=auto -Fb'
 	alias l='ls -l' la='ls -lA' lA='ls -lA' lh='ls -lAh'
 
-	command -v vim && export VISUAL='vim -p'
+	hash vim && export VISUAL='vim -p'
 	[ -z "$VISUAL" ] || export EDITOR="$VISUAL"
 	[ -n "${LESS+x}" ] || export LESS=RX
 	[ -n "$DISPLAY" ] || export DISPLAY=':0'
@@ -16,7 +16,7 @@ JESIN_PROFILE_WAS_SOURCED=1
 	[ -n "$OMP_NUM_THREADS" ] || export OMP_NUM_THREADS="$NPROC"
 	[ -n "$MAKEFLAGS" ] || export MAKEFLAGS="-j$NPROC"
 	#[ -n "$GHCRTS" ] || export GHCRTS=-N
-	[ -z "$PACMAN" ] && command -v pacmatic && export PACMAN=pacmatic
+	[ -z "$PACMAN" ] && hash pacmatic && export PACMAN=pacmatic
 	[ -n "$TMUX_TMPDIR" ] || [ -z "$XDG_RUNTIME_DIR" ] || export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
 	[ -n "$XDG_CACHE_HOME" ] || export XDG_CACHE_HOME="$HOME/.cache"
 	[ -n "$XDG_CONFIG_HOME" ] || export XDG_CONFIG_HOME="$HOME/.config"
