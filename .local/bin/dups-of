@@ -1,0 +1,8 @@
+#!/bin/sh
+f0="$(readlink -f -- "$1")"
+shift
+[ -f "$f0" ] && [ -r "$f0" ] || exit
+for f; do
+	[ "$f0" -ef "$f" ] && continue
+	cmp -s -- "$f0" "$f" && printf %s\\0 "$f"
+done
