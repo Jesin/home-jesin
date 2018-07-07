@@ -16,7 +16,7 @@
 alignas(JESBUFALIGN) char buf[JESBUFSIZE];
 
 static inline int makeFailureCode(int e) {
-	return (e & 255) ? e : (e | 128);
+	return (e & 255) ? e : (e | 248);
 }
 
 int main(int argc, char const *const *argv) {
