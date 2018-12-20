@@ -7,7 +7,7 @@
 #include <string.h>
 #include <unistd.h>
 
-static inline int makeFailureCode(int e) {
+static inline int toFailureCode(int e) {
 	return (e & 255) ? e : (e | 248);
 }
 
@@ -17,11 +17,11 @@ int main(int argc, char *const argv[]) {
 	if (setsid() < 0) {
 		pid_t x = fork();
 		if (x > 0) { return 0; }
-		if (x < 0) { return makeFailureCode(errno); }
+		if (x < 0) { return toFailureCode(errno); }
 		setsid();
 	}
 	execvp(argv[1], &argv[1]);
 	int e = errno;
 	fprintf(stderr, "%s failed to exec %s: %s\n", argv[0], argv[1], strerror(e));
-	return makeFailureCode(e);
+	return toFailureCode(e);
 }

@@ -12,20 +12,20 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-static inline int makeFailureCode(int e) {
+static inline int toFailureCode(int e) {
 	return (e & 255) ? e : (e | 248);
 }
 
 int main(int argc, const char *const *argv) {
-	setpriority(PRIO_PROCESS, 0, INT_MAX/2);
 	setpgid(0, 0);
+	setpriority(PRIO_PROCESS, 0, INT_MAX/2);
 	{
 		struct sigaction x;
 		memset(&x, 0, sizeof(x));
 		x.sa_handler = SIG_DFL;
 		x.sa_flags = SA_NOCLDSTOP | SA_NOCLDWAIT;
 		if (sigaction(SIGCHLD, &x, NULL) < 0) {
-			return makeFailureCode(errno);
+			return toFailureCode(errno);
 		}
 	}
 	unsigned n = 0;
@@ -41,7 +41,7 @@ int main(int argc, const char *const *argv) {
 			"Creates a total of n processes (where n >= 1) and exits.\n",
 			argv[0]
 		);
-		return makeFailureCode(errno);
+		return toFailureCode(errno);
 	}
 	--n;
 	unsigned i = 4;
@@ -51,7 +51,7 @@ int main(int argc, const char *const *argv) {
 			int e = errno;
 			if (e != EAGAIN || i <= 0) {
 				fprintf(stderr, "Error: %s PID %jd failed to fork. Exiting with %d fork%s remaining. errno=%d (%s)\n", argv[0], (intmax_t)getpid(), n, (n == 1 ? "" : "s"), e, strerror(e));
-				return makeFailureCode(e);
+				return toFailureCode(e);
 			}
 			--i;
 			wait(NULL);
