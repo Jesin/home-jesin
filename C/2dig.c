@@ -26,6 +26,6 @@ int main(int argc, char *const *argv) {
 	newargv[4*n + 1] = NULL;
 	execvp(newargv[0], newargv);
 	int e = errno;
-	free(newargv);
+	free(newargv); newargv = NULL;
 	return toFailureCode(e);
 }
