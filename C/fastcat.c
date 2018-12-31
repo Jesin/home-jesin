@@ -82,6 +82,9 @@ int main(int argc, const char *const *argv) {
 		} else {
 			infd = STDIN_FILENO;
 		}
+		if (posix_fadvise(infd, 0, 0, POSIX_FADV_SEQUENTIAL) >= 0) {
+			posix_fadvise(infd, 0, 0, POSIX_FADV_WILLNEED);
+		}
 
 		size_t sz;
 		{
