@@ -48,13 +48,13 @@ static void rwloop(int fd) {
 		char *buf = mybuf;
 		ssize_t r = read(fd, buf, JESBUFSZ);
 		if (r <= 0) {
-			if (r < 0 && !err) { err = errno; }
+			if (r < 0) { err = errno; }
 			return;
 		}
 		do {
 			ssize_t w = write(fd, buf, r);
 			if (w <= 0) {
-				if (!err) { err = errno; }
+				if (w < 0) { err = errno; }
 				return;
 			}
 			buf += w;
@@ -76,14 +76,11 @@ int main(int argc, const char *const *argv) {
 		if (**argv) {
 			infd = open(*argv, O_RDONLY);
 			if (infd < 0) {
-				if (!err) { err = errno; }
+				err = errno;
 				continue;
 			}
 		} else {
 			infd = STDIN_FILENO;
-		}
-		if (posix_fadvise(infd, 0, 0, POSIX_FADV_SEQUENTIAL) >= 0) {
-			posix_fadvise(infd, 0, 0, POSIX_FADV_WILLNEED);
 		}
 
 		size_t sz;
@@ -94,6 +91,10 @@ int main(int argc, const char *const *argv) {
 			} else {
 				sz = 0;
 			}
+		}
+
+		if (posix_fadvise(infd, 0, sz, POSIX_FADV_SEQUENTIAL) >= 0) {
+			posix_fadvise(infd, 0, sz, POSIX_FADV_WILLNEED);
 		}
 
 		while (sz) {
@@ -133,9 +134,9 @@ int main(int argc, const char *const *argv) {
 					r -= w;
 				} while (r > 0);
 				if (r > 0) {
-					if (close(internalPipe[1]) < 0 && !err) { err = errno; }
+					if (close(internalPipe[1]) < 0) { err = errno; }
 					rwloop(internalPipe[0]);
-					if (close(internalPipe[0]) < 0 && !err) { err = errno; }
+					if (close(internalPipe[0]) < 0) { err = errno; }
 					internalPipe[1] = internalPipe[0] = -1;
 					break;
 				}
@@ -145,7 +146,7 @@ int main(int argc, const char *const *argv) {
 		rwloop(infd);
 
 CloseAndContinue:
-		if (infd != STDIN_FILENO && close(infd) < 0 && !err) {
+		if (infd != STDIN_FILENO && close(infd) < 0) {
 			err = errno;
 		}
 	} while (*++argv);
