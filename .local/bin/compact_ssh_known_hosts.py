@@ -25,17 +25,17 @@ def compact_ssh_known_hosts(iterlines):
 			continue
 		del rawline
 		if '@' == line[0]:
-			line = tuple(line.split(None, 3))
-			hosts = dict.fromkeys(line[1].split(','))
-			line = line[:1] + line[2:]
+			line = line.split(None, 3)
+			hosts = dict.fromkeys(line.pop(1).split(','))
+			line = tuple(line)
 			try:
 				markerdict[line].update(hosts)
 			except KeyError:
 				markerdict[line] = hosts
 			continue
-		line = tuple(line.split(None, 2))
-		hosts = dict.fromkeys(line[0].split(','))
-		line = line[1:]
+		line = line.split(None, 2)
+		hosts = dict.fromkeys(line.pop(0).split(','))
+		line = tuple(line)
 		try:
 			hostdict[line].update(hosts)
 		except KeyError:
