@@ -1,4 +1,4 @@
-#!/usr/bin/pypy
+#!/usr/bin/python3
 # vim:ft=python:noet:sw=4:ts=4
 import fileinput
 import sys
