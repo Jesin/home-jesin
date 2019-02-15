@@ -52,7 +52,7 @@ static void rwloop(int fd) {
 			return;
 		}
 		do {
-			ssize_t w = write(fd, buf, r);
+			ssize_t w = write(STDOUT_FILENO, buf, r);
 			if (w <= 0) {
 				if (w < 0) { err = errno; }
 				return;
