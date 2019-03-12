@@ -17,10 +17,7 @@ static inline int toFailureCode(int e) {
 	return (e & 255) ? e : (e | 248);
 }
 
-#define JESBUFSIZE (4096)
-#define JESBUFALIGN (4096)
-
-alignas(JESBUFALIGN) static char buf[JESBUFSIZE];
+alignas(4096) static char buf[4096];
 static FILE *fp;
 static int fd;
 
@@ -59,7 +56,7 @@ int main(int argc, char *const argv[]) {
 	}
 	int n;
 	if (fd >= 0 && setupterm(NULL, fd, &n) != ERR) {
-		setvbuf(fp, buf, _IOFBF, JESBUFSIZE);
+		setvbuf(fp, buf, _IOFBF, sizeof(buf));
 		n = lines;
 		if (n <= 0) { n = 1; }
 		if (tputs(clear_screen, n, ptc) != ERR) {

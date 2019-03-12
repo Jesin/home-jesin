@@ -18,7 +18,7 @@ static inline int toFailureCode(int e) {
 }
 
 int main(int argc, const char *const *argv) {
-	setpgid(0, 0);
+	if (setsid() < 0) { setpgid(0, 0); }
 	setpriority(PRIO_PROCESS, 0, INT_MAX/2);
 	{
 		struct sigaction x;

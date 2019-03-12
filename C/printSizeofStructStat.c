@@ -9,16 +9,13 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#define JESBUFSIZE BUFSIZ
-#define JESBUFALIGN (4096)
-
-alignas(JESBUFALIGN) char buf[JESBUFSIZE];
+alignas(4096) static char buf[32768];
 
 #define PRINT_SIZEOF_ALIGNOF(T) printf(" sizeof(%s): %#zx\nalignof(%s): %#zx\n", #T, (size_t)sizeof(T), #T, (size_t)alignof(T))
 #define PRINT_OFFSETOF(T, M) printf("offsetof(%s, %s): %#zx\n", #T, #M, (size_t)offsetof(T, M))
 
 int main(void) {
-	setvbuf(stdout, buf, _IOFBF, JESBUFSIZE);
+	setvbuf(stdout, buf, _IOFBF, sizeof(buf));
 	PRINT_SIZEOF_ALIGNOF(struct stat);
 	putc('\n', stdout);
 	PRINT_OFFSETOF(struct stat, st_mode);

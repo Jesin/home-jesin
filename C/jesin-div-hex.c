@@ -9,13 +9,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define JESBUFSIZE BUFSIZ
-#define JESBUFALIGN (4096)
 #define JESSTRINGIFY2(x) #x
 #define JESSTRINGIFY(x) JESSTRINGIFY2(x)
 #define GPREC JESSTRINGIFY(DBL_DECIMAL_DIG)
 
-alignas(JESBUFALIGN) static char buf[JESBUFSIZE];
+alignas(4096) static char buf[32768];
 
 union dbl_or_ul {
 	double f;
@@ -54,7 +52,7 @@ int main(int argc, char const *const *argv) {
 		fprintf(stderr, "Usage: %s number number\n", argv[0]);
 		return toFailureCode(EINVAL);
 	}
-	setvbuf(stdout, buf, _IOFBF, JESBUFSIZE);
+	setvbuf(stdout, buf, _IOFBF, sizeof(buf));
 	double x = strtod(argv[1], NULL);
 	double y = strtod(argv[2], NULL);
 	printf(
@@ -74,9 +72,15 @@ int main(int argc, char const *const *argv) {
 	CALCNPRINT(remainder(x, y));
 	CALCNPRINT(fmod(x, y));
 	CALCNPRINT(pow(x, y));
+	CALCNPRINT(exp(log(x) * y));
+	CALCNPRINT(expm1(log(x) * y));
+	CALCNPRINT(log1p(y));
+	CALCNPRINT(log1p(x) / z);
 	CALCNPRINT(atan2(y, x));
 	CALCNPRINT(x * x + y * y);
+	CALCNPRINT(sqrt(z));
 	CALCNPRINT(fma(x, x, y * y));
 	CALCNPRINT(sqrt(z));
+	CALCNPRINT(hypot(x, y));
 	return 0;
 }

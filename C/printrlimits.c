@@ -11,10 +11,7 @@
 #include <sys/resource.h>
 #include <unistd.h>
 
-#define JESBUFSIZE BUFSIZ
-#define JESBUFALIGN (4096)
-
-alignas(JESBUFALIGN) char buf[JESBUFSIZE];
+alignas(4096) static char buf[32768];
 
 static int print_rlimit(int resource, const char *resource_name)
 {
@@ -30,7 +27,7 @@ static int print_rlimit(int resource, const char *resource_name)
 
 int main(void)
 {
-	setvbuf(stdout, buf, _IOFBF, JESBUFSIZE);
+	setvbuf(stdout, buf, _IOFBF, sizeof(buf));
 	printf(
 		"sizeof(rlim_t): %zu\n"
 		"PAGESIZE (%ju): %lu\n"

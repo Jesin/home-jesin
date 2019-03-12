@@ -6,13 +6,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#define JESBUFSIZE BUFSIZ
-#define JESBUFALIGN (4096)
-
-alignas(JESBUFALIGN) char buf[JESBUFSIZE];
+alignas(4096) static char buf[32768];
 
 int main(void) {
-	setvbuf(stdout, buf, _IOFBF, JESBUFSIZE);
+	setvbuf(stdout, buf, _IOFBF, sizeof(buf));
 	for (int i = 0; i < 135; ++i) {
 		char const *s = strerror(i);
 		if (!s) { s = "(strerror returned NULL)"; }

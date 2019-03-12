@@ -17,14 +17,11 @@
 #include <termios.h>
 #include <time.h>
 
-#define JESBUFSIZE BUFSIZ
-#define JESBUFALIGN (4096)
-
-alignas(JESBUFALIGN) char buf[JESBUFSIZE];
+alignas(4096) char buf[32768];
 
 #define PRINT_SIZEOF_ALIGNOF(T) printf(" sizeof(%s): %#zx\nalignof(%s): %#zx\n", #T, (size_t)sizeof(T), #T, (size_t)alignof(T))
 int main(void) {
-	setvbuf(stdout, buf, _IOFBF, JESBUFSIZE);
+	setvbuf(stdout, buf, _IOFBF, sizeof(buf));
 	PRINT_SIZEOF_ALIGNOF(bool);
 	PRINT_SIZEOF_ALIGNOF(char);
 	PRINT_SIZEOF_ALIGNOF(unsigned char);

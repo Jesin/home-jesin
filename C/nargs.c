@@ -7,10 +7,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#define JESBUFSIZE (4096)
-#define JESBUFALIGN (4096)
-
-alignas(JESBUFALIGN) char buf[JESBUFSIZE];
+alignas(4096) char buf[4096];
 
 static inline int toFailureCode(int e) {
 	return (e & 255) ? e : (e | 248);
@@ -18,14 +15,17 @@ static inline int toFailureCode(int e) {
 
 int main(int argc, char const *const *const argv) {
 	(void)argv; /* suppress "unused" warning */
+	if (!argc) {
+		return toFailureCode(EINVAL);
+	}
 	--argc;
-	ssize_t n = snprintf(buf, JESBUFSIZE, "%d\n", argc);
-	if (n <= 0 || n >= JESBUFSIZE) {
+	ssize_t n = snprintf(buf, sizeof(buf), "%u\n", (unsigned)argc);
+	if (n <= 0 || (size_t)n >= sizeof(buf)) {
 		return toFailureCode(errno);
 	}
 	char const *s = buf;
 	do {
-		ssize_t k = write(1, s, n);
+		ssize_t k = write(STDOUT_FILENO, s, n);
 		if (k <= 0) {
 			return toFailureCode(errno);
 		}
