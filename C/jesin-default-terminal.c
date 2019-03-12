@@ -62,5 +62,6 @@ int main(int argc, char *const argv[]) {
 	args[2] = "clenv tmux new -As0 -nlog journalctl -oshort-precise -fn8192";
 	memcpy(&args[3], &argv[1], sizeof(char*) * (size_t)argc);
 	execv(EXECPATH, args);
+	free(args); args = NULL;
 	return toFailureCode(errno);
 }
