@@ -15,10 +15,12 @@ static inline int toFailureCode(int e) {
 	return (e & 255) ? e : (e | 248);
 }
 
+static const uint64_t *const U64_5BMASK = (const uint64_t *)"\xFF\xFF\xFF\xFF\xFF\0\0";
 static const uint64_t *const U64_7BMASK = (const uint64_t *)"\xFF\xFF\xFF\xFF\xFF\xFF\xFF";
+static const uint64_t *const HOME_U64 = (const uint64_t *)"HOME=\0\0";
 static const uint64_t *const OLDPWD_U64 = (const uint64_t *)"OLDPWD=";
+static const uint32_t *const PWD_U32 = (const uint32_t *)"PWD=";
 static const uint16_t *const USCORE_U16 = (const uint16_t *)"_=";
-static char *const MYPWD = "PWD=/home/jesin";
 static char *const EXECPATH = "/usr/bin/termite";
 
 static int spc(const void *a, const void *b) {
@@ -38,18 +40,32 @@ int main(int argc, char *const argv[]) {
 	}
 	if (x > 0) { return 0; }
 	if (setsid() < 0) { setpgid(0, 0); }
+	char *home = NULL;
 	size_t i = 0;
 	for (size_t k = 0; environ[i];) {
 		++k;
-		if (*(uint16_t*)environ[i] != *USCORE_U16 && *(uint32_t*)environ[i] != *(uint32_t*)MYPWD && (*(uint64_t*)environ[i] & *U64_7BMASK) != *OLDPWD_U64) {
+		if (*(uint16_t*)environ[i] != *USCORE_U16 && *(uint32_t*)environ[i] != *PWD_U32 && (*(uint64_t*)environ[i] & *U64_7BMASK) != *OLDPWD_U64) {
+			if (!home && (*(uint64_t*)environ[i] & *U64_5BMASK) == *HOME_U64) {
+				home = environ[i] + 5;
+			}
 			++i;
 		}
 		if (i != k) {
 			environ[i] = environ[k];
 		}
 	}
-	if (chdir(MYPWD + 4) >= 0) {
-		environ[i] = MYPWD;
+	if (!home) {
+		home = "/home/jesin";
+	}
+	if (chdir(home) >= 0) {
+		size_t homelen = strlen(home);
+		char *pwd = malloc(homelen + 5);
+		if (!pwd) {
+			return toFailureCode(errno);
+		}
+		*(uint32_t*)pwd = *PWD_U32;
+		memcpy(pwd + 4, home, homelen + 1);
+		environ[i] = pwd;
 		environ[++i] = NULL;
 	}
 	qsort(environ, i, sizeof(char*), spc);
