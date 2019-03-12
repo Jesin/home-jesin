@@ -1,6 +1,6 @@
 /* jesin-default-terminal.c by Kevin Dodd */
-#ifndef _DEFAULT_SOURCE
-#define _DEFAULT_SOURCE 200809L
+#ifndef _POSIX_C_SOURCE
+#define _POSIX_C_SOURCE 200809L
 #endif
 #include <errno.h>
 #include <fcntl.h>
@@ -18,16 +18,14 @@ static inline int toFailureCode(int e) {
 static const uint64_t *const U64_7BMASK = (const uint64_t *)"\xFF\xFF\xFF\xFF\xFF\xFF\xFF";
 static const uint64_t *const OLDPWD_U64 = (const uint64_t *)"OLDPWD=";
 static const uint16_t *const USCORE_U16 = (const uint16_t *)"_=";
+static char *const MYPWD = "PWD=/home/jesin";
 static char *const EXECPATH = "/usr/bin/termite";
-static char *const ARG1 = "-e";
-static char *const ARG2 = "clenv tmux new -As0 -nlog journalctl -oshort-precise -fn8192";
-static char *const ARGV[] = {EXECPATH + 9, ARG1, ARG2, NULL};
 
 static int spc(const void *a, const void *b) {
 	return strcmp(*(const char *const *)a, *(const char *const *)b);
 }
 
-int main(void) {
+int main(int argc, char *const argv[]) {
 	pid_t x;
 	if (
 		close(0) < 0
@@ -40,20 +38,29 @@ int main(void) {
 	}
 	if (x > 0) { return 0; }
 	if (setsid() < 0) { setpgid(0, 0); }
-	if (chdir("/home/jesin") >= 0) {
-		putenv("PWD=/home/jesin");
-	}
 	size_t i = 0;
 	for (size_t k = 0; environ[i];) {
 		++k;
-		if (*(uint16_t*)environ[i] != *USCORE_U16 && (*(uint64_t*)environ[i] & *U64_7BMASK) != *OLDPWD_U64) {
+		if (*(uint16_t*)environ[i] != *USCORE_U16 && *(uint32_t*)environ[i] != *(uint32_t*)MYPWD && (*(uint64_t*)environ[i] & *U64_7BMASK) != *OLDPWD_U64) {
 			++i;
 		}
 		if (i != k) {
 			environ[i] = environ[k];
 		}
 	}
+	if (chdir(MYPWD + 4) >= 0) {
+		environ[i] = MYPWD;
+		environ[++i] = NULL;
+	}
 	qsort(environ, i, sizeof(char*), spc);
-	execv(EXECPATH, ARGV);
+	char **args = malloc(sizeof(char*) * ((size_t)argc + 3));
+	if (!args) {
+		return toFailureCode(errno);
+	}
+	args[0] = EXECPATH + 9;
+	args[1] = "-e";
+	args[2] = "clenv tmux new -As0 -nlog journalctl -oshort-precise -fn8192";
+	memcpy(&args[3], &argv[1], sizeof(char*) * (size_t)argc);
+	execv(EXECPATH, args);
 	return toFailureCode(errno);
 }
