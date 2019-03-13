@@ -67,8 +67,10 @@ int main(int argc, char *const argv[]) {
 		}
 		fflush(fp);
 	}
-	if (!(argv && argv[0] && argv[1])) { return -1; }
 	errno = 0;
+	if (!(argv && argv[0] && argv[1])) {
+		return 0;
+	}
 	execvp(argv[1], &argv[1]);
 	return toFailureCode(errno);
 }
