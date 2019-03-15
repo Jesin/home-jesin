@@ -29,11 +29,11 @@ static inline int toExitCode(int e) {
 	return (e && !(e & 255)) ? (e | 248) : e;
 }
 
-const char *const defaultArgv[] = {"", NULL};
+static const char *const defaultArgv[] = {"", NULL};
 
-alignas(PAGE_SIZE) char mybuf[JESBUFSZ];
+alignas(PAGE_SIZE) static char mybuf[JESBUFSZ];
 
-int err;
+static int err;
 
 static int widenPipe(int fd) {
 	int sz = fcntl(fd, F_GETPIPE_SZ);

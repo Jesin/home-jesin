@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-alignas(4096) char buf[4096];
+alignas(4096) static char buf[4096];
 
 static inline int toFailureCode(int e) {
 	return (e & 255) ? e : (e | 248);
