@@ -5,7 +5,7 @@ JESIN_PROFILE_WAS_SOURCED=1
 {
 	alias cp='cp -i' ls='ls -F' mv='mv -i'
 	[ dumb != "$TERM" ] && ls --color=auto -Fb /dev/null && alias ls='ls --color=auto -Fb'
-	alias l='ls -l' la='ls -lA' lA='ls -lA' lh='ls -lAh'
+	alias l='ls -l' la='ls -lA' lA='ls -lA' lg='ls -AGg' lh='ls -lAh'
 
 	hash vim && export VISUAL='vim -p'
 	[ -z "$VISUAL" ] || export EDITOR="$VISUAL"
