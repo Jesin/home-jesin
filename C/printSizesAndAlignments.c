@@ -17,7 +17,7 @@
 #include <termios.h>
 #include <time.h>
 
-alignas(4096) char buf[32768];
+alignas(4096) static char buf[32768];
 
 #define PRINT_SIZEOF_ALIGNOF(T) printf(" sizeof(%s): %#zx\nalignof(%s): %#zx\n", #T, (size_t)sizeof(T), #T, (size_t)alignof(T))
 int main(void) {
