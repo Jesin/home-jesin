@@ -54,9 +54,11 @@ int main(int argc, char *const argv[]) {
 	} else {
 		fd = -1;
 	}
+	if (fd >= 0) {
+		setvbuf(fp, buf, _IOFBF, sizeof(buf));
+	}
 	int n;
 	if (fd >= 0 && setupterm(NULL, fd, &n) != ERR) {
-		setvbuf(fp, buf, _IOFBF, sizeof(buf));
 		n = lines;
 		if (n <= 0) { n = 1; }
 		if (tputs(clear_screen, n, ptc) != ERR) {

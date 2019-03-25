@@ -5,7 +5,6 @@
 #include <errno.h>
 #include <stdalign.h>
 #include <stdio.h>
-#include <unistd.h>
 
 alignas(4096) static char buf[4096];
 
@@ -19,18 +18,9 @@ int main(int argc, char const *const *const argv) {
 		return toFailureCode(EINVAL);
 	}
 	--argc;
-	ssize_t n = snprintf(buf, sizeof(buf), "%u\n", (unsigned)argc);
-	if (n <= 0 || (size_t)n >= sizeof(buf)) {
+	setvbuf(stdout, buf, _IOFBF, sizeof(buf));
+	if (printf("%u\n", (unsigned)argc) <= 0) {
 		return toFailureCode(errno);
 	}
-	char const *s = buf;
-	do {
-		ssize_t k = write(STDOUT_FILENO, s, n);
-		if (k <= 0) {
-			return toFailureCode(errno);
-		}
-		s += k;
-		n -= k;
-	} while (n > 0);
 	return 0;
 }
