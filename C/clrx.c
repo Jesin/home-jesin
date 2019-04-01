@@ -56,18 +56,18 @@ int main(int argc, char *const argv[]) {
 	}
 	if (fd >= 0) {
 		setvbuf(fp, buf, _IOFBF, sizeof(buf));
-	}
-	int n;
-	if (fd >= 0 && setupterm(NULL, fd, &n) != ERR) {
-		n = lines;
-		if (n <= 0) { n = 1; }
-		if (tputs(clear_screen, n, ptc) != ERR) {
-			const char *e3 = tigetstr("E3");
-			if (e3) {
-				(void)tputs(e3, n, ptc);
+		int n;
+		if (setupterm(NULL, fd, &n) != ERR) {
+			n = lines;
+			if (n <= 0) { n = 1; }
+			if (tputs(clear_screen, n, ptc) != ERR) {
+				const char *e3 = tigetstr("E3");
+				if (e3) {
+					(void)tputs(e3, n, ptc);
+				}
 			}
+			fflush(fp);
 		}
-		fflush(fp);
 	}
 	errno = 0;
 	if (!(argv && argv[0] && argv[1])) {
