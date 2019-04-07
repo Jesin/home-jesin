@@ -45,7 +45,7 @@ int main(int argc, char *const argv[]) {
 	for (size_t k = 0; environ[i];) {
 		++k;
 		if (*(uint16_t*)environ[i] != *USCORE_U16 && *(uint32_t*)environ[i] != *PWD_U32 && (*(uint64_t*)environ[i] & *U64_7BMASK) != *OLDPWD_U64) {
-			if (!home && (*(uint64_t*)environ[i] & *U64_5BMASK) == *HOME_U64) {
+			if ((*(uint64_t*)environ[i] & *U64_5BMASK) == *HOME_U64) {
 				home = environ[i] + 5;
 			}
 			++i;
