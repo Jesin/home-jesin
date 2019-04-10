@@ -40,6 +40,6 @@ int main(int argc, char *const argv[]) {
 	qsort(environ, i, sizeof(char*), spc);
 	execvp(argv[1], &argv[1]);
 	int e = errno;
-	dprintf(errfd, "%s failed to exec %s: %s\n", argv[0], argv[1], strerror(e));
+	dprintf(errfd, "%s failed to exec %s: %d %s\n", argv[0], argv[1], e, strerror(e));
 	return toFailureCode(e);
 }
