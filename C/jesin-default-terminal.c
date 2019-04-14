@@ -41,10 +41,13 @@ int main(int argc, char *const argv[]) {
 	if (x > 0) { return 0; }
 	if (setsid() < 0) { setpgid(0, 0); }
 	char *home = NULL;
+	char *pwd = NULL;
 	size_t i = 0;
 	for (size_t k = 0; environ[i];) {
 		++k;
-		if (*(uint16_t*)environ[i] != *USCORE_U16 && *(uint32_t*)environ[i] != *PWD_U32 && (*(uint64_t*)environ[i] & *U64_7BMASK) != *OLDPWD_U64) {
+		if (*(uint32_t*)environ[i] == *PWD_U32) {
+			pwd = environ[i];
+		} else if (*(uint16_t*)environ[i] != *USCORE_U16 && (*(uint64_t*)environ[i] & *U64_7BMASK) != *OLDPWD_U64) {
 			if ((*(uint64_t*)environ[i] & *U64_5BMASK) == *HOME_U64) {
 				home = environ[i] + 5;
 			}
@@ -59,11 +62,13 @@ int main(int argc, char *const argv[]) {
 	}
 	if (chdir(home) >= 0) {
 		size_t homelen = strlen(home);
-		char *pwd = malloc(homelen + 5);
-		if (!pwd) {
-			return toFailureCode(errno);
+		if (!pwd || strnlen(pwd + 4, homelen) < homelen) {
+			pwd = malloc(homelen + 5);
+			if (!pwd) {
+				return toFailureCode(errno);
+			}
+			*(uint32_t*)pwd = *PWD_U32;
 		}
-		*(uint32_t*)pwd = *PWD_U32;
 		memcpy(pwd + 4, home, homelen + 1);
 		environ[i] = pwd;
 		environ[++i] = NULL;
