@@ -1,4 +1,4 @@
-/* clrx.c by Kevin Dodd */
+/* clr.c by Kevin Dodd */
 #ifndef _POSIX_C_SOURCE
 #define _POSIX_C_SOURCE 200809L
 #endif
