@@ -62,6 +62,7 @@ int main(void) {
 	PRINT_SIZEOF_ALIGNOF(struct { char a; max_align_t b; });
 	PRINT_SIZEOF_ALIGNOF(struct itimerspec);
 	PRINT_SIZEOF_ALIGNOF(struct sigaction);
+	PRINT_SIZEOF_ALIGNOF(sigset_t);
 	PRINT_SIZEOF_ALIGNOF(struct termios);
 	PRINT_SIZEOF_ALIGNOF(struct timespec);
 	PRINT_SIZEOF_ALIGNOF(struct tm);
