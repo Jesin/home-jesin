@@ -10,13 +10,15 @@ static inline int toFailureCode(int e) {
 	return (e & 255) ? e : (e | 248);
 }
 
+static char *const DIGPATH = "/usr/bin/dig";
+
 int main(int argc, char *const *argv) {
 	++argv;
 	if (--argc < 0) { return toFailureCode(argc); }
 	size_t const n = (size_t)argc;
 	char **newargv = malloc((4 * n + 2) * sizeof(char*));
 	if (!newargv) { return toFailureCode(errno); }
-	newargv[0] = "dig";
+	newargv[0] = DIGPATH + 9;
 	for (size_t i = 0; i < n; ++i) {
 		newargv[4*i + 1] = argv[i];
 		newargv[4*i + 2] = "AAAA";
@@ -24,7 +26,7 @@ int main(int argc, char *const *argv) {
 		newargv[4*i + 4] = "A";
 	}
 	newargv[4*n + 1] = NULL;
-	execvp(newargv[0], newargv);
+	execv(DIGPATH, newargv);
 	int e = errno;
 	free(newargv); newargv = NULL;
 	return toFailureCode(e);
