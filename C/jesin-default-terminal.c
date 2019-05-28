@@ -40,7 +40,7 @@ int main(int argc, char *const argv[]) {
 	}
 	if (x > 0) { return 0; }
 	if (setsid() < 0) { setpgid(0, 0); }
-	char *home = NULL;
+	char *home = "/home/jesin";
 	char *pwd = NULL;
 	size_t i = 0;
 	for (size_t k = 0; environ[i];) {
@@ -56,9 +56,6 @@ int main(int argc, char *const argv[]) {
 		if (i != k) {
 			environ[i] = environ[k];
 		}
-	}
-	if (!home) {
-		home = "/home/jesin";
 	}
 	if (chdir(home) >= 0) {
 		size_t homelen = strlen(home);
