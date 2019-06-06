@@ -46,15 +46,15 @@ int main(int argc, char *const argv[]) {
 	}
 	qsort(environ, i, sizeof(char*), spc);
 	if (isatty(STDOUT_FILENO)) {
-		fd = STDOUT_FILENO;
 		fp = stdout;
+		fd = STDOUT_FILENO;
 	} else if (isatty(STDERR_FILENO)) {
-		fd = STDERR_FILENO;
 		fp = stderr;
+		fd = STDERR_FILENO;
 	} else {
-		fd = -1;
+		fp = NULL;
 	}
-	if (fd >= 0) {
+	if (fp) {
 		setvbuf(fp, buf, _IOFBF, sizeof(buf));
 		int n;
 		if (setupterm(NULL, fd, &n) != ERR) {
