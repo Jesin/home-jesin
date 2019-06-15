@@ -9,10 +9,10 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-alignas(4096) static char buf[32768];
+alignas(4096) static char buf[8192];
 
-#define PRINT_SIZEOF_ALIGNOF(T) printf(" sizeof(%s): %#zx\nalignof(%s): %#zx\n", #T, (size_t)sizeof(T), #T, (size_t)alignof(T))
-#define PRINT_OFFSETOF(T, M) printf("offsetof(%s, %s): %#zx\n", #T, #M, (size_t)offsetof(T, M))
+#define PRINT_SIZEOF_ALIGNOF(T) printf(" sizeof(%s): %#zx\nalignof(%s): %#zx\n", #T, sizeof(T), #T, alignof(T))
+#define PRINT_OFFSETOF(T, M) printf("offsetof(%s, %s): %#zx\n", #T, #M, offsetof(T, M))
 
 int main(void) {
 	setvbuf(stdout, buf, _IOFBF, sizeof(buf));
