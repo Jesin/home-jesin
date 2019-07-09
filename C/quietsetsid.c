@@ -4,7 +4,6 @@
 #endif
 #include <errno.h>
 #include <fcntl.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -21,10 +20,8 @@ static int spc(const void *a, const void *b) {
 int main(int argc, char *const argv[]) {
 	(void)argc; /* suppress "unused" warning */
 	if (!(argv && argv[0] && argv[1])) { return -1; }
-	int errfd = fcntl(2, F_DUPFD_CLOEXEC, 3);
 	if (
-		errfd < 0
-		|| close(0) < 0
+		close(0) < 0
 		|| open("/dev/null", O_RDWR) != 0
 		|| dup2(0, 1) < 0
 		|| dup2(0, 2) < 0
@@ -39,7 +36,5 @@ int main(int argc, char *const argv[]) {
 	while (environ[i]) { ++i; }
 	qsort(environ, i, sizeof(char*), spc);
 	execvp(argv[1], &argv[1]);
-	int e = errno;
-	dprintf(errfd, "%s failed to exec %s: %d %s\n", argv[0], argv[1], e, strerror(e));
-	return toFailureCode(e);
+	return toFailureCode(errno);
 }
