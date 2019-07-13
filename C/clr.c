@@ -19,16 +19,15 @@ static inline int toFailureCode(int e) {
 
 alignas(4096) static char buf[4096];
 static FILE *fp;
-static int fd;
 
 static const uint64_t *const U64_7BMASK = (const uint64_t *)"\xFF\xFF\xFF\xFF\xFF\xFF\xFF";
 static const uint64_t *const OLDPWD_U64 = (const uint64_t *)"OLDPWD=";
 static const uint16_t *const USCORE_U16 = (const uint16_t *)"_=";
 
-static int ptc(int c) {
-	return putc(c, fp);
+static int pc(int c) {
+	return putc_unlocked(c, fp);
 }
-static int spc(const void *a, const void *b) {
+static int sc(const void *a, const void *b) {
 	return strcmp(*(const char *const *)a, *(const char *const *)b);
 }
 
@@ -44,31 +43,32 @@ int main(int argc, char *const argv[]) {
 			environ[i] = environ[k];
 		}
 	}
-	qsort(environ, i, sizeof(char*), spc);
-	if (isatty(STDOUT_FILENO)) {
+	qsort(environ, i, sizeof(char*), sc);
+	int fd;
+	if (isatty(1)) {
 		fp = stdout;
-		fd = STDOUT_FILENO;
-	} else if (isatty(STDERR_FILENO)) {
+		fd = 1;
+	} else if (isatty(2)) {
 		fp = stderr;
-		fd = STDERR_FILENO;
+		fd = 2;
 	} else {
-		fp = NULL;
+		goto SkipClear;
 	}
-	if (fp) {
-		setvbuf(fp, buf, _IOFBF, sizeof(buf));
-		int n;
-		if (setupterm(NULL, fd, &n) != ERR) {
-			n = lines;
-			if (n <= 0) { n = 1; }
-			if (tputs(clear_screen, n, ptc) != ERR) {
-				const char *e3 = tigetstr("E3");
-				if (e3) {
-					(void)tputs(e3, n, ptc);
-				}
-			}
-			fflush(fp);
+	setvbuf(fp, buf, _IOFBF, sizeof(buf));
+	int n;
+	if (setupterm(NULL, fd, &n) == ERR) {
+		goto SkipClear;
+	}
+	n = lines;
+	if (n <= 0) { n = 1; }
+	if (tputs(clear_screen, n, pc) != ERR) {
+		const char *e3 = tigetstr("E3");
+		if (e3) {
+			(void)tputs(e3, n, pc);
 		}
 	}
+	fflush(fp);
+SkipClear:
 	errno = 0;
 	if (!(argv && argv[0] && argv[1])) {
 		return 0;
