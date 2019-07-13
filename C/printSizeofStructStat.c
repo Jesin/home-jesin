@@ -17,10 +17,10 @@ alignas(4096) static char buf[8192];
 int main(void) {
 	setvbuf(stdout, buf, _IOFBF, sizeof(buf));
 	PRINT_SIZEOF_ALIGNOF(struct stat);
-	putc('\n', stdout);
+	putchar_unlocked('\n');
 	PRINT_OFFSETOF(struct stat, st_mode);
 	PRINT_SIZEOF_ALIGNOF(mode_t);
-	putc('\n', stdout);
+	putchar_unlocked('\n');
 	PRINT_OFFSETOF(struct stat, st_size);
 	PRINT_SIZEOF_ALIGNOF(off_t);
 	return 0;
