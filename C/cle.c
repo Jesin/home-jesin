@@ -17,7 +17,7 @@ static const uint64_t *const U64_7BMASK = (const uint64_t *)"\xFF\xFF\xFF\xFF\xF
 static const uint64_t *const OLDPWD_U64 = (const uint64_t *)"OLDPWD=";
 static const uint16_t *const USCORE_U16 = (const uint16_t *)"_=";
 
-static int spc(const void *a, const void *b) {
+static int sc(const void *a, const void *b) {
 	return strcmp(*(const char *const *)a, *(const char *const *)b);
 }
 
@@ -34,7 +34,7 @@ int main(int argc, char *const argv[]) {
 			environ[i] = environ[k];
 		}
 	}
-	qsort(environ, i, sizeof(char*), spc);
+	qsort(environ, i, sizeof(char*), sc);
 	execvp(argv[1], &argv[1]);
 	return toFailureCode(errno);
 }
