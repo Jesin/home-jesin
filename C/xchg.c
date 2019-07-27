@@ -6,9 +6,9 @@
 #include <string.h>
 
 int main(int argc, const char *const *argv) {
-	(void)argc; /* suppress "unused" warning */
 	const char *prog = *argv;
-	if (!*++argv) {
+	++argv;
+	if (argc < 3 || !(argc & 1)) {
 		fprintf(stderr, "Usage: %s SOURCE DEST [SOURCE DEST [...]]\n", prog);
 		return -1;
 	}
