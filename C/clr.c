@@ -6,7 +6,6 @@
 #include <errno.h>
 #include <stdalign.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <term.h>
@@ -17,15 +16,34 @@ static inline int toFailureCode(int e) {
 	return (e & 255) ? e : (e | 248);
 }
 
-alignas(4096) static char buf[4096];
-static FILE *fp;
-
 static const uint64_t *const U64_7BMASK = (const uint64_t *)"\xFF\xFF\xFF\xFF\xFF\xFF\xFF";
 static const uint64_t *const OLDPWD_U64 = (const uint64_t *)"OLDPWD=";
 static const uint16_t *const USCORE_U16 = (const uint16_t *)"_=";
 
+alignas(4096) static char buf[4096];
+static size_t bn;
+static int fd;
+
+static void wr(size_t n) {
+	const char *a = buf;
+	do {
+		ssize_t w = write(fd, a, n);
+		if (w <= 0) {
+			break;
+		}
+		a += w;
+		n -= w;
+	} while (n);
+}
 static int pc(int c) {
-	return putc_unlocked(c, fp);
+	size_t n = bn;
+	if (n >= sizeof(buf)) {
+		wr(n);
+		n = 0;
+	}
+	buf[n] = c;
+	bn = n+1;
+	return 0;
 }
 static int sc(const void *a, const void *b) {
 	return strcmp(*(const char *const *)a, *(const char *const *)b);
@@ -44,17 +62,13 @@ int main(int argc, char *const argv[]) {
 		}
 	}
 	qsort(environ, i, sizeof(char*), sc);
-	int fd;
 	if (isatty(1)) {
-		fp = stdout;
 		fd = 1;
 	} else if (isatty(2)) {
-		fp = stderr;
 		fd = 2;
 	} else {
 		goto SkipClear;
 	}
-	setvbuf(fp, buf, _IOFBF, sizeof(buf));
 	int n;
 	if (setupterm(NULL, fd, &n) == ERR) {
 		goto SkipClear;
@@ -67,7 +81,7 @@ int main(int argc, char *const argv[]) {
 			(void)tputs(e3, n, pc);
 		}
 	}
-	fflush(fp);
+	wr(bn);
 SkipClear:
 	errno = 0;
 	if (!(argv && argv[0] && argv[1])) {

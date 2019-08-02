@@ -6,6 +6,7 @@
 #define _POSIX_C_SOURCE 200809L
 #endif
 
+#include <limits.h>
 #include <stdalign.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -67,5 +68,6 @@ int main(void) {
 	PRINT_SIZEOF_ALIGNOF(struct timespec);
 	PRINT_SIZEOF_ALIGNOF(struct tm);
 	PRINT_SIZEOF_ALIGNOF(FILE);
+	printf("CHAR_MIN: %d\nCHAR_MAX: %d\n", CHAR_MIN, CHAR_MAX);
 	return 0;
 }
