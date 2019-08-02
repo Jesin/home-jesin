@@ -10,13 +10,14 @@ _start:
 	pop rdx	;old argc
 	pop rax	;discard old argv[0]
 	lea rdx, [rsp + 8*rdx]	;environ
-	mov edi, argv2
-	push rdi
-	sub edi, argv2 - argv1
-	push rdi
-	sub edi, argv1 - argv0
-	push rdi
-	sub edi, argv0 - progPath
+	mov eax, argv2
+	push rax
+	sub al, argv2 - argv1
+	push rax
+	sub al, argv1 - argv0
+	push rax
+	sub al, argv0 - progPath
+	xchg edi, eax
 	mov rsi, rsp
 	push SYS_execve
 	pop rax
