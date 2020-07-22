@@ -1,10 +1,10 @@
-#ifndef jesenvsort_h_INCLUDED
 /* jesenvsort.h by Kevin Dodd */
+#ifndef jesenvsort_h_INCLUDED
 #define jesenvsort_h_INCLUDED 1
 #if _POSIX_C_SOURCE < 200809L
 #define _POSIX_C_SOURCE 200809L
 #endif
-#include <stddef.h>
+#include "jesmacros.h"
 extern char** environ;
 
 typedef struct JesEnvRangeT {

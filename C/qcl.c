@@ -1,6 +1,5 @@
 /* qcl.c by Kevin Dodd */
 #include "jesenvsort.h"
-#include "jesmacros.h"
 #include <curses.h>
 #include <errno.h>
 #include <fcntl.h>

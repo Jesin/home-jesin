@@ -1,6 +1,11 @@
 /* jesmacros.h by Kevin Dodd */
 #ifndef jesmacros_h_INCLUDED
-#define jesmacros_h_INCLUDED
+#define jesmacros_h_INCLUDED 1
+#include <stddef.h>
+
+#if __STDC_VERSION__ < 199901L
+#define restrict __restrict__
+#endif
 
 #define JES_ASSUME(x) do { if (!(x)) JES_UNREACHABLE; } while (0)
 
