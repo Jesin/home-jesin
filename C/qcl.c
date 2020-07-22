@@ -1,8 +1,9 @@
-/* clr.c by Kevin Dodd */
+/* qcl.c by Kevin Dodd */
 #include "jesenvsort.h"
 #include "jesmacros.h"
 #include <curses.h>
 #include <errno.h>
+#include <fcntl.h>
 #include <stdalign.h>
 #include <stdlib.h>
 #include <term.h>
@@ -100,6 +101,13 @@ SkipClear:
 	if (!*++argv) {
 		return 0;
 	}
-	execvp(*argv, argv);
+	if (
+		close(0) >= 0
+		&& !open("/dev/null", O_RDWR)
+		&& dup2(0, 1) >= 0
+		&& dup2(0, 2) >= 0
+	) {
+		execvp(*argv, argv);
+	}
 	return toFailureCode(errno);
 }

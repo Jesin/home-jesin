@@ -2,7 +2,7 @@
 #ifndef jesin_hex_conversion_c_INCLUDED
 #define jesin_hex_conversion_c_INCLUDED
 #include "jesin-hex-conversion.h"
-#include "jesin-unreachable.h"
+#include "jesmacros.h"
 #include <errno.h>
 #include <limits.h>
 #include <stdalign.h>
@@ -12,22 +12,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifndef JESIN_B2H_BYTES_PER_LINE
-#define JESIN_B2H_BYTES_PER_LINE ((size_t)64)
+#ifndef JES_B2H_BYTES_PER_LINE
+#define JES_B2H_BYTES_PER_LINE ((size_t)64)
 #endif
-#ifndef JESIN_BUFALIGN
-#define JESIN_BUFALIGN ((size_t)32)
+#ifndef JES_BUFALIGN
+#define JES_BUFALIGN ((size_t)32)
 #endif
-#ifndef JESIN_BUFSIZ
-#define JESIN_BUFSIZ ((size_t)65536)
+#ifndef JES_BUFSIZ
+#define JES_BUFSIZ ((size_t)65536)
 #endif
 
 int jesin_bin_to_hex(FILE *ibin, FILE *ohex) {
-	alignas(JESIN_BUFALIGN) uint8_t inputBuf[JESIN_B2H_BYTES_PER_LINE];
-	alignas(JESIN_BUFALIGN) char outputBuf[2*JESIN_B2H_BYTES_PER_LINE + 1];
+	alignas(JES_BUFALIGN) uint8_t inputBuf[JES_B2H_BYTES_PER_LINE];
+	alignas(JES_BUFALIGN) char outputBuf[2*JES_B2H_BYTES_PER_LINE + 1];
 	while (1) {
-		const size_t numRead = fread(inputBuf, sizeof(uint8_t), JESIN_B2H_BYTES_PER_LINE, ibin);
-		JESIN_ASSUME(numRead <= JESIN_B2H_BYTES_PER_LINE);
+		const size_t numRead = fread(inputBuf, sizeof(uint8_t), JES_B2H_BYTES_PER_LINE, ibin);
+		JES_ASSUME(numRead <= JES_B2H_BYTES_PER_LINE);
 		if (!numRead) {
 			return ferror(ibin);
 		}
@@ -42,7 +42,7 @@ int jesin_bin_to_hex(FILE *ibin, FILE *ohex) {
 		}
 		outputBuf[2*numRead] = '\n';
 		const size_t numWritten = fwrite(outputBuf, sizeof(char), 2*numRead + 1, ohex);
-		JESIN_ASSUME(numWritten <= (2*JESIN_B2H_BYTES_PER_LINE + 1));
+		JES_ASSUME(numWritten <= (2*JES_B2H_BYTES_PER_LINE + 1));
 		if (numWritten < (2*numRead + 1)) {
 			return ferror(ohex);
 		}
@@ -50,12 +50,12 @@ int jesin_bin_to_hex(FILE *ibin, FILE *ohex) {
 }
 
 int jesin_hex_to_bin(FILE *ihex, FILE *obin) {
-	alignas(4096) char inputBuf[JESIN_BUFSIZ];
-	alignas(JESIN_BUFALIGN) uint8_t outputBuf[JESIN_BUFSIZ];
+	alignas(4096) char inputBuf[JES_BUFSIZ];
+	alignas(JES_BUFALIGN) uint8_t outputBuf[JES_BUFSIZ];
 	size_t j = 0;
 	while (1) {
-		const size_t numRead = fread(inputBuf, sizeof(char), JESIN_BUFSIZ, ihex);
-		JESIN_ASSUME(numRead <= JESIN_BUFSIZ);
+		const size_t numRead = fread(inputBuf, sizeof(char), JES_BUFSIZ, ihex);
+		JES_ASSUME(numRead <= JES_BUFSIZ);
 		for (size_t i = 0; i < numRead; ++i) {
 			char c = inputBuf[i];
 			uint8_t x;
@@ -74,15 +74,15 @@ int jesin_hex_to_bin(FILE *ihex, FILE *obin) {
 				outputBuf[j >> 1] = (x << 4);
 			}
 			++j;
-			if (j == 2*JESIN_BUFSIZ) {
-				size_t numWritten = fwrite(outputBuf, sizeof(uint8_t), JESIN_BUFSIZ, obin);
-				if (numWritten < JESIN_BUFSIZ) {
+			if (j == 2*JES_BUFSIZ) {
+				size_t numWritten = fwrite(outputBuf, sizeof(uint8_t), JES_BUFSIZ, obin);
+				if (numWritten < JES_BUFSIZ) {
 					return ferror(obin);
 				}
 				j = 0;
 			}
 		}
-		if (numRead < JESIN_BUFSIZ) {
+		if (numRead < JES_BUFSIZ) {
 			size_t numWritten = fwrite(outputBuf, sizeof(uint8_t), (j >> 1), obin);
 			return numWritten < (j >> 1) ? ferror(obin) : ferror(ihex);
 		}
@@ -159,7 +159,7 @@ int jesin_hex_conversion_main(int argc, char const *const *argv) {
 	return retcode;
 }
 
-#ifndef JESIN_HEX_CONVERSION_OMIT_MAIN
+#ifndef JES_HEX_CONVERSION_OMIT_MAIN
 int main(int argc, char const *const *argv) {
 	int r = jesin_hex_conversion_main(argc, argv);
 	if (r && !(r & 255)) { r |= 128; }
