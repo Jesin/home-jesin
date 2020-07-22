@@ -13,8 +13,7 @@
 
 alignas(4096) static char buf[32768];
 
-static int print_rlimit(int resource, const char *resource_name)
-{
+static int print_rlimit(int resource, const char *resource_name) {
 	struct rlimit rlim;
 	int rcode = getrlimit(resource, &rlim);
 	if (rcode) {
@@ -25,9 +24,8 @@ static int print_rlimit(int resource, const char *resource_name)
 
 #define PRINT_RLIMIT(name) print_rlimit(RLIMIT_##name, #name)
 
-int main(void)
-{
-	setvbuf(stdout, buf, _IOFBF, sizeof(buf));
+int main(void) {
+	setvbuf(stdout, buf, _IOFBF, sizeof buf);
 	printf(
 		"sizeof(rlim_t): %zu\n"
 		"PAGESIZE (%ju): %lu\n"

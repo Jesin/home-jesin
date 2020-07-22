@@ -47,12 +47,12 @@ static const char *const calcnprintfmtstr =
 	printf(calcnprintfmtstr, #EXPR, z, z, dbl_as_ul(z));\
 } while (0)
 
-int main(int argc, char const *const *argv) {
+int main(int argc, const char* const* argv) {
 	if (argc != 3) {
 		fprintf(stderr, "Usage: %s number number\n", argv[0]);
 		return toFailureCode(EINVAL);
 	}
-	setvbuf(stdout, buf, _IOFBF, sizeof(buf));
+	setvbuf(stdout, buf, _IOFBF, sizeof buf);
 	double x = strtod(argv[1], NULL);
 	double y = strtod(argv[2], NULL);
 	printf(
@@ -71,6 +71,7 @@ int main(int argc, char const *const *argv) {
 	CALCNPRINT(x / y);
 	CALCNPRINT(remainder(x, y));
 	CALCNPRINT(fmod(x, y));
+	CALCNPRINT(nextafter(x, y));
 	CALCNPRINT(pow(x, y));
 	CALCNPRINT(exp(log(x) * y));
 	CALCNPRINT(expm1(log(x) * y));

@@ -1,33 +1,24 @@
 /* clr.c by Kevin Dodd */
-#ifndef _POSIX_C_SOURCE
-#define _POSIX_C_SOURCE 200809L
-#endif
+#include "jesenvsort.h"
 #include <curses.h>
 #include <errno.h>
 #include <stdalign.h>
-#include <stdint.h>
 #include <stdlib.h>
-#include <string.h>
 #include <term.h>
 #include <unistd.h>
-extern char **environ;
 
 static inline int toFailureCode(int e) {
 	return (e & 255) ? e : (e | 248);
 }
 
-static const uint64_t *const U64_7BMASK = (const uint64_t *)"\xFF\xFF\xFF\xFF\xFF\xFF\xFF";
-static const uint64_t *const OLDPWD_U64 = (const uint64_t *)"OLDPWD=";
-static const uint16_t *const USCORE_U16 = (const uint16_t *)"_=";
-
 alignas(4096) static char buf[4096];
 static size_t bn;
-static int fd;
+static int f;
 
 static void wr(size_t n) {
-	const char *a = buf;
+	const char* a = buf;
 	do {
-		ssize_t w = write(fd, a, n);
+		ssize_t w = write(f, a, n);
 		if (w <= 0) {
 			break;
 		}
@@ -37,7 +28,7 @@ static void wr(size_t n) {
 }
 static int pc(int c) {
 	size_t n = bn;
-	if (n >= sizeof(buf)) {
+	if (__builtin_expect_with_probability(n >= sizeof buf, 0, 0x0.fffp0)) {
 		wr(n);
 		n = 0;
 	}
@@ -45,48 +36,69 @@ static int pc(int c) {
 	bn = n+1;
 	return 0;
 }
-static int sc(const void *a, const void *b) {
-	return strcmp(*(const char *const *)a, *(const char *const *)b);
-}
 
-int main(int argc, char *const argv[]) {
+int main(int argc, char** argv) {
 	(void)argc; /* suppress "unused" warning */
-	size_t i = 0;
-	for (size_t k = 0; environ[i];) {
-		++k;
-		if (*(uint16_t*)environ[i] != *USCORE_U16 && (*(uint64_t*)environ[i] & *U64_7BMASK) != *OLDPWD_U64) {
-			++i;
-		}
-		if (i != k) {
-			environ[i] = environ[k];
+	JesEnvRangeT x;
+	x.a = environ;
+	x.n = 0;
+	while (x.a[x.n]) { x.n++; }
+	if (x.n > 1) {
+		char** y = malloc((x.n+1) * sizeof y);
+		char*** z = malloc((x.n/2+2) * sizeof y);
+		x = jesEnvSort(x.a, y, z);
+		free(z);
+		if (x.a == y) {
+			environ = x.a;
+		} else {
+			free(y);
 		}
 	}
-	qsort(environ, i, sizeof(char*), sc);
+	char** q = jesEnvGet("_=", x.a, x.n);
+	if (q) {
+		x.n = q - x.a;
+		do {
+			*q = q[1];
+		} while (*q++);
+	}
+	q = jesEnvGet("OLDPWD=", x.a, x.n);
+	if (q) {
+		x.a = q;
+		x.n = 0;
+		while (1) {
+			x.a[x.n] = x.a[x.n+1];
+			if (!x.a[x.n]) {
+				break;
+			}
+			x.n++;
+		}
+	}
+	q = jesEnvGet("TERM=", x.a, x.n);
 	if (isatty(1)) {
-		fd = 1;
+		f = 1;
 	} else if (isatty(2)) {
-		fd = 2;
+		f = 2;
 	} else {
 		goto SkipClear;
 	}
-	int n;
-	if (setupterm(NULL, fd, &n) == ERR) {
+	int r;
+	if (setupterm(q ? *q + 5 : NULL, f, &r) == ERR) {
 		goto SkipClear;
 	}
-	n = lines;
-	if (n <= 0) { n = 1; }
-	if (tputs(clear_screen, n, pc) != ERR) {
-		const char *e3 = tigetstr("E3");
+	r = lines;
+	if (r <= 0) { r = 1; }
+	if (tputs(clear_screen, r, pc) != ERR) {
+		const char* e3 = tigetstr("E3");
 		if (e3) {
-			(void)tputs(e3, n, pc);
+			(void)tputs(e3, r, pc);
 		}
 	}
 	wr(bn);
 SkipClear:
 	errno = 0;
-	if (!(argv && argv[0] && argv[1])) {
+	if (!*++argv) {
 		return 0;
 	}
-	execvp(argv[1], &argv[1]);
+	execvp(*argv, argv);
 	return toFailureCode(errno);
 }

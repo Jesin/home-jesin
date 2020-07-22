@@ -1,9 +1,8 @@
-/* jessetsid.c by Kevin Dodd */
+/* quietsetsid.c by Kevin Dodd */
 #include "jesenvsort.h"
 #include <errno.h>
-#include <stdio.h>
+#include <fcntl.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 
 static inline int toFailureCode(int e) {
@@ -13,6 +12,12 @@ static inline int toFailureCode(int e) {
 int main(int argc, char** argv) {
 	(void)argc; /* suppress "unused" warning */
 	if (!*++argv) { return toFailureCode(EINVAL); }
+	if (
+		close(0) < 0
+		|| open("/dev/null", O_RDWR)
+		|| dup2(0, 1) < 0
+		|| dup2(0, 2) < 0
+	) { return toFailureCode(errno); }
 	if (setsid() < 0) {
 		pid_t i = fork();
 		if (i < 0) { return toFailureCode(errno); }
@@ -35,7 +40,5 @@ int main(int argc, char** argv) {
 		}
 	}
 	execvp(*argv, argv);
-	int e = errno;
-	fprintf(stderr, "%s failed to exec %s: %d %s\n", argv[0], argv[1], e, strerror(e));
-	return toFailureCode(e);
+	return toFailureCode(errno);
 }
