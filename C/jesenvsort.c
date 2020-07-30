@@ -15,7 +15,7 @@ int jesEnvCmp(const void* x, const void* y) {
 		if (*a == (uch)'=' || !*a) { return 0; }
 	}
 	int r = *a == (uch)'=' ? -1 : *b == (uch)'=' ? 1 : (int)*a - (int)*b;
-	if (!r) { __builtin_unreachable(); }
+	JES_ASSUME(r);
 	return r;
 }
 

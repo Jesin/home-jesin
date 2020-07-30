@@ -1,11 +1,11 @@
-/* quietsetsid.c by Kevin Dodd */
+/* qce.c by Kevin Dodd */
 #include "jesenvsort.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-static inline int toFailureCode(int e) {
+static int toFailureCode(int e) {
 	return (e & 255) ? e : (e | 248);
 }
 
@@ -18,12 +18,6 @@ int main(int argc, char** argv) {
 		|| dup2(0, 1) < 0
 		|| dup2(0, 2) < 0
 	) { return toFailureCode(errno); }
-	if (setsid() < 0) {
-		pid_t i = fork();
-		if (i < 0) { return toFailureCode(errno); }
-		if (i) { return 0; }
-		setsid();
-	}
 	JesEnvRangeT x;
 	x.a = environ;
 	x.n = 0;
@@ -38,6 +32,19 @@ int main(int argc, char** argv) {
 		} else {
 			free(y);
 		}
+	}
+	char** q = jesEnvGet("_=", x.a, x.n);
+	if (q) {
+		x.n = q - x.a;
+		do {
+			*q = q[1];
+		} while (*q++);
+	}
+	q = jesEnvGet("OLDPWD=", x.a, x.n);
+	if (q) {
+		do {
+			*q = q[1];
+		} while (*q++);
 	}
 	execvp(*argv, argv);
 	return toFailureCode(errno);

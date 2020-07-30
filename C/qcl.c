@@ -100,9 +100,9 @@ SkipClear:
 	if (!*++argv) {
 		return 0;
 	}
+	close(0);
 	if (
-		close(0) >= 0
-		&& !open("/dev/null", O_RDWR)
+		!open("/dev/null", O_RDWR)
 		&& dup2(0, 1) >= 0
 		&& dup2(0, 2) >= 0
 	) {
