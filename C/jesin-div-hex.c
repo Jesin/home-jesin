@@ -7,6 +7,7 @@
 #include <float.h>
 #include <math.h>
 #include <stdio.h>
+#include <stdio_ext.h>
 #include <stdlib.h>
 
 #define JESSTRINGIFY2(x) #x
@@ -15,27 +16,17 @@
 
 alignas(4096) static char buf[32768];
 
-union dbl_or_ul {
-	double f;
-	unsigned long i;
-};
-
 static inline unsigned long dbl_as_ul(double x) {
-	union dbl_or_ul u;
-	u.f = x;
-	return u.i;
-}
-static inline double ul_as_dbl(unsigned long x) {
-	union dbl_or_ul u;
-	u.i = x;
-	return u.f;
+	union { double f; unsigned long i; } t;
+	t.f = x;
+	return t.i;
 }
 
 static inline int toFailureCode(int e) {
 	return (e & 255) ? e : (e | 248);
 }
 
-static const char *const calcnprintfmtstr =
+static const char calcnprintfmtstr[] =
 	"z = %s\n"
 	"z: %." GPREC "g\n"
 	"z: %a\n"
@@ -52,6 +43,7 @@ int main(int argc, const char* const* argv) {
 		fprintf(stderr, "Usage: %s number number\n", argv[0]);
 		return toFailureCode(EINVAL);
 	}
+	__fsetlocking(stdout, FSETLOCKING_BYCALLER);
 	setvbuf(stdout, buf, _IOFBF, sizeof buf);
 	double x = strtod(argv[1], NULL);
 	double y = strtod(argv[2], NULL);

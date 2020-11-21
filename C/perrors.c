@@ -4,12 +4,14 @@
 #endif
 #include <stdalign.h>
 #include <stdio.h>
+#include <stdio_ext.h>
 #include <string.h>
 
-alignas(4096) static char buf[32768];
+alignas(4096) static char buf[8192];
 
 int main(void) {
-	setvbuf(stdout, buf, _IOFBF, sizeof(buf));
+	__fsetlocking(stdout, FSETLOCKING_BYCALLER);
+	setvbuf(stdout, buf, _IOFBF, sizeof buf);
 	for (int i = 0; i < 135; ++i) {
 		char const *s = strerror(i);
 		if (!s) { s = "(strerror returned NULL)"; }

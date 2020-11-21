@@ -1,5 +1,7 @@
 /* xchg.c by Kevin Dodd */
-#define _GNU_SOURCE 1
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE 200809L
+#endif
 #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
@@ -10,7 +12,7 @@ int main(int argc, const char *const *argv) {
 	++argv;
 	if (argc < 3 || !(argc & 1)) {
 		fprintf(stderr, "Usage: %s SOURCE DEST [SOURCE DEST [...]]\n", prog);
-		return -1;
+		return EINVAL;
 	}
 	int e = 0;
 	do {
