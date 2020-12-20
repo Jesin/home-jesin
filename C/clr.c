@@ -89,7 +89,7 @@ int main(int argc, char** argv) {
 	if (r <= 0) { r = 1; }
 	if (tputs(clear_screen, r, pc) != ERR) {
 		const char* e3 = tigetstr("E3");
-		if (e3) {
+		if (e3 && e3+1) {
 			(void)tputs(e3, r, pc);
 		}
 	}

@@ -8,7 +8,8 @@ typedef const uch* ustr;
 int jesEnvCmp(const void* x, const void* y) {
 	ustr a=x, b=y;
 #if 0
-	if (!a) { return b ? 1 : 0; }
+	if (a == b) { return 0; }
+	if (!a) { return 1; }
 	if (!b) { return -1; }
 #endif
 	for (; *a == *b; ++a, ++b) {

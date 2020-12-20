@@ -71,7 +71,6 @@ int main(int argc, const char* const* argv) {
 	CALCNPRINT(log1p(x) / z);
 	CALCNPRINT(atan2(y, x));
 	CALCNPRINT(x * x + y * y);
-	CALCNPRINT(sqrt(z));
 	CALCNPRINT(fma(x, x, y * y));
 	CALCNPRINT(sqrt(z));
 	CALCNPRINT(hypot(x, y));

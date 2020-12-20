@@ -19,7 +19,7 @@ int main(int argc, const char *const *argv) {
 		if (renameat2(AT_FDCWD, *argv, AT_FDCWD, argv[1], RENAME_EXCHANGE) < 0) {
 			e = errno;
 			const char *s = strerror(e);
-			fprintf(stderr, "%s: cannot exchange '%s' with '%s': %d %s\n", prog, *argv, argv[1], e, s);
+			fprintf(stderr, "%s: cannot exchange '%s' with '%s': (%d) %s\n", prog, *argv, argv[1], e, s);
 		}
 		argv += 2;
 	} while (*argv);
