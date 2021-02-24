@@ -36,3 +36,4 @@ left_meters=AllCPUs4 LoadAverage Tasks
 left_meter_modes=1 2 2
 right_meters=Battery Memory Swap Uptime
 right_meter_modes=1 1 1 2
+hide_function_bar=0
